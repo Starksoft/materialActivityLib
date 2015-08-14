@@ -38,8 +38,8 @@ public class MainActivity extends StarksoftActivity implements AdapterView.OnIte
 	{
 		ArrayList<DrawerItemModel> models = new ArrayList<>();
 
-		models.add(new DrawerItemModel(0, "RecyclerListFragment", null));
-		models.add(new DrawerItemModel(0, "Undef", null));
+		models.add(new DrawerItemModel(0, "RecyclerListFragment", "1"));
+		models.add(new DrawerItemModel(0, "Undef", "3"));
 
 		return models;
 	}
