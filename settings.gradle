@@ -1,0 +1,1 @@
+include ':app', ':lib_starksoft_material_activity'
