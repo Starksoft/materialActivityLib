@@ -129,7 +129,7 @@ public class MainActivityFragment extends StarksoftRecyclerListFragment implemen
 
 			TextView t = new TextView(getActivity());
 			t.setTextSize(20);
-			t.setPadding(30, 0, 0, 0);
+//			t.setPadding(30, 0, 0, 0);
 			// set the view's size, margins, paddings and layout parameters
 
 			ViewHolder vh = new ViewHolder(t);
