@@ -1,0 +1,31 @@
+<resources>
+
+    <!--<style name="StarksoftBaseThemeLight" parent="Theme.AppCompat.Light.DarkActionBar">-->
+    <!--&lt;!&ndash;         <item name="android:spinnerStyle">@style/Widget.Spinner</item> &ndash;&gt;-->
+    <!--</style>-->
+
+    <!--<style name="StarksoftBaseTheme" parent="Theme.AppCompat">-->
+    <!--&lt;!&ndash;         <item name="android:spinnerStyle">@style/Widget.Spinner</item> &ndash;&gt;-->
+    <!--</style>-->
+    <!---->
+    <!--&lt;!&ndash; Application theme. &ndash;&gt;-->
+    <!--<style name="Theme.Starksoft" parent="StarksoftBaseTheme">-->
+    <!--&lt;!&ndash; All customizations that are NOT specific to a particular API-level can go here. &ndash;&gt;-->
+    <!--&lt;!&ndash; <item name="colorPrimary">@color/primary</item> &ndash;&gt;-->
+    <!--&lt;!&ndash; <item name="colorPrimaryDark">@color/primary_pressed</item> &ndash;&gt;-->
+    <!--&lt;!&ndash; <item name="colorAccent">@color/accent</item> &ndash;&gt;-->
+    <!--</style>-->
+    <!--<style name="Theme.Starksoft.Light" parent="StarksoftBaseThemeLight">-->
+    <!--&lt;!&ndash; All customizations that are NOT specific to a particular API-level can go here. &ndash;&gt;-->
+    <!--&lt;!&ndash; <item name="colorPrimary">@color/primary</item> &ndash;&gt;-->
+    <!--&lt;!&ndash; <item name="colorPrimaryDark">@color/primary_pressed</item> &ndash;&gt;-->
+    <!--&lt;!&ndash; <item name="colorAccent">@color/accent</item> &ndash;&gt;-->
+    <!--</style>    -->
+    <!--<style name="Widget.Spinner" parent="Widget.AppCompat.Spinner.DropDown.ActionBar">-->
+    <!--<item name="android:background">@drawable/spinner_background_material</item>-->
+    <!--<item name="android:clickable">true</item>-->
+    <!--</style>-->
+    <!--<style name="activated_listview_item" parent="Theme.AppCompat">-->
+    <!--<item name="android:background">@drawable/drawer_list_selector</item>-->
+    <!--</style>-->
+</resources>

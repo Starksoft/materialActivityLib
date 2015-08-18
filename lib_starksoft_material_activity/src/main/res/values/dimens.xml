@@ -1,0 +1,28 @@
+<resources>
+
+    <!-- Default screen margins, per the Android Design guidelines. -->
+    <dimen name="activity_horizontal_margin">16dp</dimen>
+    <dimen name="activity_vertical_margin">16dp</dimen>
+
+    <dimen name="slidingmenu_offset">50dp</dimen>
+    <dimen name="shadow_width">15dp</dimen>
+    <dimen name="drawer_margin_left">11dp</dimen>
+
+    <integer name="num_cols">1</integer>
+
+    <!--FloatinActionButton setup-->
+    <dimen name="fab_size_normal">56dp</dimen>
+    <dimen name="fab_size_mini">40dp</dimen>
+    <dimen name="fab_mini_shadow_size">6dp</dimen>
+    <dimen name="fab_min_significant_scroll">4dp</dimen>
+    <dimen name="fab_elevation_lollipop">8dp</dimen>
+    <dimen name="fab_shadow_size">12dp</dimen>
+    <dimen name="fab_scroll_threshold">4dp</dimen>
+    <dimen name="fab_layout_margin">16dp</dimen>
+
+
+
+    <integer name="preference_fragment_scrollbarStyle">0x02000000</integer>
+    <!-- outsideOverlay -->
+
+</resources>
