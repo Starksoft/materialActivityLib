@@ -7,9 +7,6 @@ import android.support.v4.view.ViewCompat;
 import android.util.AttributeSet;
 import android.view.View;
 
-/**
- * Created by User on 13.08.2015.
- */
 public class ScrollAwareFABBehavior extends FloatingActionButton.Behavior
 {
 	public ScrollAwareFABBehavior(Context context, AttributeSet attrs)
@@ -27,6 +24,9 @@ public class ScrollAwareFABBehavior extends FloatingActionButton.Behavior
 	public void onNestedScroll(CoordinatorLayout coordinatorLayout, FloatingActionButton child, View target, int dxConsumed, int dyConsumed, int dxUnconsumed, int dyUnconsumed)
 	{
 		super.onNestedScroll(coordinatorLayout, child, target, dxConsumed, dyConsumed, dxUnconsumed, dyUnconsumed);
+
+		if (!child.isEnabled())
+			return;
 
 		if (dyConsumed > 0 && child.getVisibility() == View.VISIBLE)
 		{

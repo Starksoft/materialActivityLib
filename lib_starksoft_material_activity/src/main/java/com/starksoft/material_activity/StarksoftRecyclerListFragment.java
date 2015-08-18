@@ -1,6 +1,5 @@
 package com.starksoft.material_activity;
 
-import android.content.Context;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.ColorRes;
@@ -8,7 +7,6 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.RecyclerView;
-import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,7 +21,7 @@ public class StarksoftRecyclerListFragment extends Fragment
 	static final int INTERNAL_HINT_CONTAINER_ID = R.id.hintTextView;
 	static final int INTERNAL_FAB_CONTAINER_ID = R.id.floatingActionButton;
 
-	private boolean isFabEnabled = true;
+	private boolean isFabEnabled = false;
 //	private boolean isSwipeRefreshLayoutEnabled = true;
 
 	final private Handler mHandler = new Handler();
@@ -71,6 +69,9 @@ public class StarksoftRecyclerListFragment extends Fragment
 	public void setFabEnabled(boolean state)
 	{
 		isFabEnabled = state;
+
+		if (mFloatingActionButton != null)
+			mFloatingActionButton.setEnabled(state);
 	}
 
 	public FloatingActionButton getFloatingActionButton()
@@ -273,8 +274,7 @@ public class StarksoftRecyclerListFragment extends Fragment
 			mProgressContainer.setVisibility(View.GONE);
 			mListContainer.setVisibility(View.VISIBLE);
 
-			if (isFabEnabled)
-				mFloatingActionButton.setVisibility(View.VISIBLE);
+//			mFloatingActionButton.setVisibility(isFabEnabled ? View.VISIBLE : View.GONE);
 		}
 		else
 		{
@@ -297,8 +297,7 @@ public class StarksoftRecyclerListFragment extends Fragment
 			mProgressContainer.setVisibility(View.VISIBLE);
 			mListContainer.setVisibility(View.GONE);
 
-			if (isFabEnabled)
-				mFloatingActionButton.setVisibility(View.GONE);
+//			mFloatingActionButton.setVisibility(isFabEnabled ? View.VISIBLE : View.GONE);
 		}
 	}
 
