@@ -33,6 +33,13 @@ public class MainActivity extends StarksoftActivity implements AdapterView.OnIte
 		}
 	}
 
+	@Override
+	public void onBackPressed()
+	{
+		super.onBackPressed();
+		finish();
+	}
+
 	// Менюшка
 	private ArrayList<DrawerItemModel> generateData()
 	{

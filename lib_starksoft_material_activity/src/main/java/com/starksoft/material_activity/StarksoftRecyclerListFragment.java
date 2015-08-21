@@ -21,7 +21,7 @@ public class StarksoftRecyclerListFragment extends Fragment
 	static final int INTERNAL_HINT_CONTAINER_ID = R.id.hintTextView;
 	static final int INTERNAL_FAB_CONTAINER_ID = R.id.floatingActionButton;
 
-	private boolean isFabEnabled = false;
+	private boolean isFabEnabled = true;
 //	private boolean isSwipeRefreshLayoutEnabled = true;
 
 	final private Handler mHandler = new Handler();
