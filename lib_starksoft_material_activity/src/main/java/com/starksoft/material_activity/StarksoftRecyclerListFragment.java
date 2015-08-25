@@ -274,7 +274,7 @@ public class StarksoftRecyclerListFragment extends Fragment
 			mProgressContainer.setVisibility(View.GONE);
 			mListContainer.setVisibility(View.VISIBLE);
 
-//			mFloatingActionButton.setVisibility(isFabEnabled ? View.VISIBLE : View.GONE);
+			mFloatingActionButton.setVisibility(isFabEnabled ? View.VISIBLE : View.GONE);
 		}
 		else
 		{
@@ -297,7 +297,7 @@ public class StarksoftRecyclerListFragment extends Fragment
 			mProgressContainer.setVisibility(View.VISIBLE);
 			mListContainer.setVisibility(View.GONE);
 
-//			mFloatingActionButton.setVisibility(isFabEnabled ? View.VISIBLE : View.GONE);
+			mFloatingActionButton.setVisibility(isFabEnabled ? View.VISIBLE : View.GONE);
 		}
 	}
 
