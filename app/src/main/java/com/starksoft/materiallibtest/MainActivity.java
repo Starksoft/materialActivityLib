@@ -1,6 +1,5 @@
 package com.starksoft.materiallibtest;
 
-import android.app.Activity;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.Fragment;
@@ -18,6 +17,7 @@ import java.util.ArrayList;
 public class MainActivity extends StarksoftActivity implements AdapterView.OnItemClickListener
 {
 	int currentDrawerItem;
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState)
 	{
@@ -46,6 +46,7 @@ public class MainActivity extends StarksoftActivity implements AdapterView.OnIte
 		ArrayList<DrawerItemModel> models = new ArrayList<>();
 
 		models.add(new DrawerItemModel(0, "RecyclerListFragment", "1"));
+		models.add(new DrawerItemModel(0, "Empty RecyclerListFragment", "7"));
 		models.add(new DrawerItemModel(0, "Undef", "3"));
 
 		return models;
@@ -68,7 +69,11 @@ public class MainActivity extends StarksoftActivity implements AdapterView.OnIte
 				break;
 
 			case 1:
-				return;
+				fragment = new MainActivityFragment();
+				Bundle b = new Bundle();
+				b.putBoolean("empty", true);
+				fragment.setArguments(b);
+				break;
 
 		}
 		if (fragment != null)

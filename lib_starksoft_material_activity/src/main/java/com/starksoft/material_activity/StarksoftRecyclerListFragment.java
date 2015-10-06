@@ -69,9 +69,7 @@ public class StarksoftRecyclerListFragment extends Fragment
 	public void setFabEnabled(boolean state)
 	{
 		isFabEnabled = state;
-
-		if (mFloatingActionButton != null)
-			mFloatingActionButton.setEnabled(state);
+		ensureList();
 	}
 
 	public FloatingActionButton getFloatingActionButton()
@@ -352,12 +350,11 @@ public class StarksoftRecyclerListFragment extends Fragment
 			}
 			mList = (EmptyRecyclerView) rawListView;
 
-			if (mFloatingActionButton != null)
-			{
-				mFloatingActionButton.setVisibility(isFabEnabled ? View.VISIBLE : View.GONE);
-			}
+			mFloatingActionButton.setVisibility(isFabEnabled ? View.VISIBLE : View.GONE);
+			// Нужно для класса поведения кнопки, чтобы она не появлялась, когда заперщена
+			mFloatingActionButton.setEnabled(isFabEnabled);
 
-			else if (mEmptyText != null)
+			if (mEmptyText != null)
 			{
 				mStandardEmptyView.setText(mEmptyText);
 			}

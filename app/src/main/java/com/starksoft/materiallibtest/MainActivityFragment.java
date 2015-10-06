@@ -8,7 +8,6 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.ViewParent;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -19,12 +18,20 @@ import com.starksoft.material_activity.StarksoftRecyclerListFragment;
  */
 public class MainActivityFragment extends StarksoftRecyclerListFragment implements SwipeRefreshLayout.OnRefreshListener
 {
-	public static final boolean LOAD_EMPTY_ADAPTER = false;
 	Handler mHandler;
+	boolean isEmpty = false;
 
 	public MainActivityFragment()
 	{}
 
+
+	@Override
+	public void onViewCreated(View view, Bundle savedInstanceState)
+	{
+		// Инициализация кнопки нужна здесь
+		setFabEnabled(true);
+		super.onViewCreated(view, savedInstanceState);
+	}
 	@Override
 	public void onActivityCreated(Bundle savedInstanceState)
 	{
@@ -34,6 +41,11 @@ public class MainActivityFragment extends StarksoftRecyclerListFragment implemen
 		getRecyclerListView().setLayoutManager(m);
 
 		getSwipeRefreshLayout().setOnRefreshListener(this);
+
+		Bundle b = getArguments();
+		if (b != null)
+			isEmpty = b.getBoolean("empty");
+
 		mHandler = new Handler();
 		mHandler.postDelayed(new Runnable()
 		{
@@ -42,13 +54,13 @@ public class MainActivityFragment extends StarksoftRecyclerListFragment implemen
 			{
 				setEmptyText("Нет данных для отображения");
 
-				if (LOAD_EMPTY_ADAPTER)
+				if (isEmpty)
 				{
 					setListAdapter(null);
 				}
 				else
 				{
-					loadAdapter(50);
+					loadAdapter(500);
 				}
 			}
 		}, 2000);
@@ -88,7 +100,7 @@ public class MainActivityFragment extends StarksoftRecyclerListFragment implemen
 			@Override
 			public void run()
 			{
-				loadAdapter(60);
+				loadAdapter(getRecyclerViewListAdapter().getItemCount() + 1);
 				getSwipeRefreshLayout().setRefreshing(false);
 			}
 		}, 2000);
