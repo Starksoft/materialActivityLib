@@ -13,9 +13,6 @@ import android.widget.Toast;
 
 import com.starksoft.material_activity.StarksoftRecyclerListFragment;
 
-/**
- * A placeholder fragment containing a simple view.
- */
 public class MainActivityFragment extends StarksoftRecyclerListFragment implements SwipeRefreshLayout.OnRefreshListener
 {
 	Handler mHandler;
@@ -24,7 +21,6 @@ public class MainActivityFragment extends StarksoftRecyclerListFragment implemen
 	public MainActivityFragment()
 	{}
 
-
 	@Override
 	public void onViewCreated(View view, Bundle savedInstanceState)
 	{
@@ -32,6 +28,7 @@ public class MainActivityFragment extends StarksoftRecyclerListFragment implemen
 		setFabEnabled(true);
 		super.onViewCreated(view, savedInstanceState);
 	}
+
 	@Override
 	public void onActivityCreated(Bundle savedInstanceState)
 	{
@@ -39,12 +36,10 @@ public class MainActivityFragment extends StarksoftRecyclerListFragment implemen
 
 		LinearLayoutManager m = new LinearLayoutManager(getActivity());
 		getRecyclerListView().setLayoutManager(m);
-
 		getSwipeRefreshLayout().setOnRefreshListener(this);
 
 		Bundle b = getArguments();
-		if (b != null)
-			isEmpty = b.getBoolean("empty");
+		isEmpty = b != null && b.getBoolean("empty");
 
 		mHandler = new Handler();
 		mHandler.postDelayed(new Runnable()
@@ -55,13 +50,9 @@ public class MainActivityFragment extends StarksoftRecyclerListFragment implemen
 				setEmptyText("Нет данных для отображения");
 
 				if (isEmpty)
-				{
 					setListAdapter(null);
-				}
 				else
-				{
 					loadAdapter(500);
-				}
 			}
 		}, 2000);
 
