@@ -127,6 +127,11 @@ public class StarksoftRecyclerListFragment extends Fragment
 		mAdapter = adapter;
 		if (mList != null)
 		{
+			if (adapter == null)
+			{
+				// Если нет адаптера - надо запретить
+				getSwipeRefreshLayout().setEnabled(false);
+			}
 			mList.setAdapter(adapter);
 			if (!mListShown && !hadAdapter)
 			{
@@ -294,8 +299,9 @@ public class StarksoftRecyclerListFragment extends Fragment
 			}
 			mProgressContainer.setVisibility(View.VISIBLE);
 			mListContainer.setVisibility(View.GONE);
-
-			mFloatingActionButton.setVisibility(isFabEnabled ? View.VISIBLE : View.GONE);
+			// По идее, не нужно показывать кнопку при загружке листа, надо бы ее выключать
+//			mFloatingActionButton.setVisibility(isFabEnabled ? View.VISIBLE : View.GONE);
+			mFloatingActionButton.setVisibility(View.GONE);
 		}
 	}
 

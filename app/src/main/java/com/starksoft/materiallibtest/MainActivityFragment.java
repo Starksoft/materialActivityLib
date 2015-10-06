@@ -73,7 +73,13 @@ public class MainActivityFragment extends StarksoftRecyclerListFragment implemen
 		});
 	}
 
-	void loadAdapter(int count)
+	@Override
+	public void onDestroy()
+	{
+		mHandler.removeCallbacksAndMessages(null);
+	}
+
+	private void loadAdapter(int count)
 	{
 		String items = "";
 		for (int i = 0; i < count; i++)
@@ -86,6 +92,11 @@ public class MainActivityFragment extends StarksoftRecyclerListFragment implemen
 	@Override
 	public void onRefresh()
 	{
+		// Это защищает от ложных срабатываний, при отстутствии адаптера
+		if (!getSwipeRefreshLayout().isEnabled())
+			return;
+
+		setListShown(false);
 		mHandler.postDelayed(new Runnable()
 		{
 			@Override
@@ -93,9 +104,9 @@ public class MainActivityFragment extends StarksoftRecyclerListFragment implemen
 			{
 				loadAdapter(getRecyclerViewListAdapter().getItemCount() + 1);
 				getSwipeRefreshLayout().setRefreshing(false);
+				setListShown(true);
 			}
 		}, 2000);
-
 	}
 
 	class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder>
