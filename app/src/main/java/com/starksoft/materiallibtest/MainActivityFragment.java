@@ -76,7 +76,10 @@ public class MainActivityFragment extends StarksoftRecyclerListFragment implemen
 	@Override
 	public void onDestroy()
 	{
-		mHandler.removeCallbacksAndMessages(null);
+		super.onDestroy();
+
+		if (mHandler != null)
+			mHandler.removeCallbacksAndMessages(null);
 	}
 
 	private void loadAdapter(int count)
