@@ -26,7 +26,7 @@ public class MainActivity extends StarksoftActivityNewDrawer implements Navigati
 
 		getNavigationView().setNavigationItemSelectedListener(this);
 		getNavigationView().inflateMenu(R.menu.drawer);
-		setCounterToDrawerItem(R.id.filledList, 777);
+//		setCounterToDrawerItem(R.id.filledList, 777);
 		if (savedInstanceState == null)
 		{
 			selectItem(R.id.filledList, false);
