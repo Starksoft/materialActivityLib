@@ -6,8 +6,8 @@
     <!--<color name="swipe_color_3">#E09A27</color>-->
     <!--<color name="swipe_color_4">#C78922</color>-->
 
-    <!--<color name="colorPrimary">#f9ab2b</color>-->
-    <!--<color name="colorAccent">#FAB340</color>-->
-    <!--<color name="colorPrimaryDark">#E09A27</color>-->
+    <color name="colorPrimary">#f9ab2b</color>
+    <color name="colorAccent">#FAB340</color>
+    <color name="colorPrimaryDark">#E09A27</color>
 
 </resources>

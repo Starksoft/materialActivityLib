@@ -4,12 +4,8 @@ import android.content.Context;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
 import android.util.AttributeSet;
-import android.util.TypedValue;
 import android.widget.ProgressBar;
 
-/**
- * Created by anisonyan on 18.03.2015.
- */
 public class TintedProgressBar extends ProgressBar
 {
 	public TintedProgressBar(Context context)

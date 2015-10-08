@@ -54,7 +54,7 @@ public class MainActivityFragment extends StarksoftRecyclerListFragment implemen
 				else
 					loadAdapter(500);
 			}
-		}, 2000);
+		}, 1000);
 
 		getFloatingActionButton().setOnClickListener(new View.OnClickListener()
 		{
@@ -86,7 +86,7 @@ public class MainActivityFragment extends StarksoftRecyclerListFragment implemen
 	{
 		String items = "";
 		for (int i = 0; i < count; i++)
-			items += (i + 1) + ";";
+			items += "Item  " + (i + 1) + ";";
 
 		setListAdapter(new MyAdapter(items.split(";")));
 		setHintText("Items: " + getRecyclerViewListAdapter().getItemCount());

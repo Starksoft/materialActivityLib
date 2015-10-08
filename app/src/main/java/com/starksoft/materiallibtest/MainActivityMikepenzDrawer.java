@@ -2,7 +2,6 @@ package com.starksoft.materiallibtest;
 
 import android.os.Bundle;
 import android.os.Handler;
-import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -12,7 +11,7 @@ import com.starksoft.material_activity.StarksoftActivityNewDrawer;
 
 import java.util.ArrayList;
 
-public class MainActivity extends StarksoftActivityNewDrawer implements NavigationView.OnNavigationItemSelectedListener
+public class MainActivityMikepenzDrawer extends StarksoftActivityNewDrawer
 {
 	@Override
 	protected void onCreate(Bundle savedInstanceState)
@@ -23,20 +22,17 @@ public class MainActivity extends StarksoftActivityNewDrawer implements Navigati
 //		setDrawerAdapter(new DrawerItemModelAdapter(this, generateData()));
 //		setDrawerClickListener(this);
 
-		getNavigationView().setNavigationItemSelectedListener(this);
-		getNavigationView().inflateMenu(R.menu.drawer);
+
+//		setCounterToDrawerItem(R.id.filledList, 777);
+
 
 		if (savedInstanceState == null)
 		{
-			selectItem(R.id.filledList, false);
+			selectItem(R.string.drawer_filledList, false);
 		}
 	}
 
-	@Override
-	public boolean onNavigationItemSelected(final MenuItem menuItem)
-	{
-		return selectItem(menuItem.getItemId(), true);
-	}
+
 
 	// Менюшка
 	private ArrayList<DrawerItemModel> generateData()
@@ -50,22 +46,25 @@ public class MainActivity extends StarksoftActivityNewDrawer implements Navigati
 		return models;
 	}
 
-	public boolean selectItem(int resId, boolean useDelay)
+	public boolean selectItem(int id, boolean useDelay)
 	{
 		Fragment fragment = null;
 
-		switch (resId)
+		switch (id)
 		{
-			case R.id.filledList:
+			case R.string.drawer_filledList:
 				fragment = new MainActivityFragment();
 				break;
 
-			case R.id.emptyList:
+			case R.string.drawer_emptyList:
 				fragment = new MainActivityFragment();
 				Bundle b = new Bundle();
 				b.putBoolean("empty", true);
 				fragment.setArguments(b);
 				break;
+
+			default:
+				return false;
 		}
 		if (fragment != null)
 		{
@@ -86,7 +85,7 @@ public class MainActivity extends StarksoftActivityNewDrawer implements Navigati
 			else
 				setActiveFragment(f);
 		}
-		selectDrawerItemAndSetTitle(resId, null);
+		selectDrawerItemAndSetTitle(id, null);
 
 		return true;
 	}
@@ -115,5 +114,6 @@ public class MainActivity extends StarksoftActivityNewDrawer implements Navigati
 
 		return super.onOptionsItemSelected(item);
 	}
+
 
 }

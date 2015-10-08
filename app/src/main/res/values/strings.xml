@@ -2,4 +2,11 @@
     <string name="app_name">MaterialLibTest</string>
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
+
+
+    <string name="drawer_filledList">Filled list with 500 items</string>
+    <string name="drawer_emptyList">Empty List</string>
+    <string name="drawer_etc">ETC</string>
+
+
 </resources>
