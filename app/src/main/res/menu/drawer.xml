@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/filledList"
+            android:checked="true"
+            android:icon="@mipmap/ic_launcher"
+            android:title="Filled list with 500 items"/>
+        <item
+            android:id="@+id/emptyList"
+            android:icon="@drawable/fab_src"
+            android:title="Empty list"/>
+    </group>
+</menu>

@@ -2,42 +2,41 @@ package com.starksoft.materiallibtest;
 
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.AdapterView;
 
 import com.starksoft.material_activity.DrawerItemModel;
 import com.starksoft.material_activity.DrawerItemModelAdapter;
-import com.starksoft.material_activity.StarksoftActivity;
+import com.starksoft.material_activity.StarksoftActivityNewDrawer;
 
 import java.util.ArrayList;
 
-public class MainActivity extends StarksoftActivity implements AdapterView.OnItemClickListener
+public class MainActivity extends StarksoftActivityNewDrawer implements NavigationView.OnNavigationItemSelectedListener
 {
-	int currentDrawerItem;
-
 	@Override
 	protected void onCreate(Bundle savedInstanceState)
 	{
 		super.onCreate(savedInstanceState);
 //		setContentView(R.layout.activity_main);
 
-		setDrawerAdapter(new DrawerItemModelAdapter(this, generateData()));
-		setDrawerClickListener(this);
+//		setDrawerAdapter(new DrawerItemModelAdapter(this, generateData()));
+//		setDrawerClickListener(this);
 
+		getNavigationView().setNavigationItemSelectedListener(this);
+		getNavigationView().inflateMenu(R.menu.drawer);
+		setCounterToDrawerItem(R.id.filledList, 777);
 		if (savedInstanceState == null)
 		{
-			selectItem(0, false);
+			selectItem(R.id.filledList, false);
 		}
 	}
 
 	@Override
-	public void onBackPressed()
+	public boolean onNavigationItemSelected(final MenuItem menuItem)
 	{
-		super.onBackPressed();
-		finish();
+		return selectItem(menuItem.getItemId(), true);
 	}
 
 	// Менюшка
@@ -52,29 +51,22 @@ public class MainActivity extends StarksoftActivity implements AdapterView.OnIte
 		return models;
 	}
 
-	@Override
-	public void onItemClick(AdapterView<?> parent, View view, int position, long id)
-	{
-		selectItem(position, true);
-	}
-
-	public void selectItem(int position, boolean useDelay)
+	public boolean selectItem(int resId, boolean useDelay)
 	{
 		Fragment fragment = null;
 
-		switch (currentDrawerItem = position)
+		switch (resId)
 		{
-			case 0:
+			case R.id.filledList:
 				fragment = new MainActivityFragment();
 				break;
 
-			case 1:
+			case R.id.emptyList:
 				fragment = new MainActivityFragment();
 				Bundle b = new Bundle();
 				b.putBoolean("empty", true);
 				fragment.setArguments(b);
 				break;
-
 		}
 		if (fragment != null)
 		{
@@ -95,7 +87,9 @@ public class MainActivity extends StarksoftActivity implements AdapterView.OnIte
 			else
 				setActiveFragment(f);
 		}
-		selectDrawerItemAndSetTitle(position, null);
+		selectDrawerItemAndSetTitle(resId, null);
+
+		return true;
 	}
 
 	@Override
@@ -122,4 +116,5 @@ public class MainActivity extends StarksoftActivity implements AdapterView.OnIte
 
 		return super.onOptionsItemSelected(item);
 	}
+
 }
