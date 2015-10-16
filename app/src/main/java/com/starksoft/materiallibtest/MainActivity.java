@@ -88,7 +88,7 @@ public class MainActivity extends StarksoftActivityNewDrawer implements Navigati
 		}
 		selectDrawerItemAndSetTitle(resId, null);
 
-		return true;
+		return fragment != null;
 	}
 
 	@Override

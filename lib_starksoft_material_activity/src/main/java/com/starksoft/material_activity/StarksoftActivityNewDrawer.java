@@ -320,17 +320,12 @@ public class StarksoftActivityNewDrawer extends AppCompatActivity
 	public void onBackPressed()
 	{
 		if (mDrawerLayout.isDrawerOpen(GravityCompat.START))
-		{
 			mDrawerLayout.closeDrawer(GravityCompat.START);
-		}
+
 		else if (isActionModeRunning())
-		{
 			closeActionMode();
-		}
 		else
-		{
 			super.onBackPressed();
-		}
 	}
 
 	@Override

@@ -22,7 +22,6 @@ public class StarksoftRecyclerListFragment extends Fragment
 	static final int INTERNAL_FAB_CONTAINER_ID = R.id.floatingActionButton;
 
 	private boolean isFabEnabled = false;
-//	private boolean isSwipeRefreshLayoutEnabled = true;
 
 	final private Handler mHandler = new Handler();
 	final private Runnable mRequestFocus = new Runnable()
@@ -61,15 +60,25 @@ public class StarksoftRecyclerListFragment extends Fragment
 		mSwipeRefreshLayout.setOnRefreshListener(listener);
 	}
 
-//	public void setSwipeRefreshLayoutEnabled(boolean state)
-//	{
-//		isSwipeRefreshLayoutEnabled = state;
-//	}
+	public void setSwipeRefreshLayoutEnabled(boolean state)
+	{
+		mSwipeRefreshLayout.setEnabled(state);
+	}
+
+	public boolean isSwipeRefreshLayoutEnabled()
+	{
+		return mSwipeRefreshLayout.isEnabled();
+	}
 
 	public void setFabEnabled(boolean state)
 	{
 		isFabEnabled = state;
-		ensureList();
+		if (mFloatingActionButton == null)
+			return;
+
+		mFloatingActionButton.setVisibility(isFabEnabled ? View.VISIBLE : View.GONE);
+		// Нужно для класса поведения кнопки, чтобы она не появлялась, когда заперщена
+		mFloatingActionButton.setEnabled(isFabEnabled);
 	}
 
 	public FloatingActionButton getFloatingActionButton()
@@ -316,9 +325,8 @@ public class StarksoftRecyclerListFragment extends Fragment
 	private void ensureList()
 	{
 		if (mList != null)
-		{
 			return;
-		}
+
 		View root = getView();
 		if (root == null)
 		{
@@ -356,9 +364,10 @@ public class StarksoftRecyclerListFragment extends Fragment
 			}
 			mList = (EmptyRecyclerView) rawListView;
 
-			mFloatingActionButton.setVisibility(isFabEnabled ? View.VISIBLE : View.GONE);
-			// Нужно для класса поведения кнопки, чтобы она не появлялась, когда заперщена
-			mFloatingActionButton.setEnabled(isFabEnabled);
+			setFabEnabled(isFabEnabled);
+//			mFloatingActionButton.setVisibility(isFabEnabled ? View.VISIBLE : View.GONE);
+//			// Нужно для класса поведения кнопки, чтобы она не появлялась, когда заперщена
+//			mFloatingActionButton.setEnabled(isFabEnabled);
 
 			if (mEmptyText != null)
 			{
