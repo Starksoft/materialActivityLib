@@ -2,6 +2,7 @@ package com.starksoft.materiallibtest;
 
 import android.os.Bundle;
 import android.os.Handler;
+
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
 import android.view.Menu;
@@ -23,8 +24,8 @@ public class MainActivity extends StarksoftActivityNewDrawer implements Navigati
 //		setDrawerAdapter(new DrawerItemModelAdapter(this, generateData()));
 //		setDrawerClickListener(this);
 
-		getNavigationView().setNavigationItemSelectedListener(this);
 		getNavigationView().inflateMenu(R.menu.drawer);
+		getNavigationView().setNavigationItemSelectedListener(this);
 
 		if (savedInstanceState == null)
 		{
@@ -35,6 +36,8 @@ public class MainActivity extends StarksoftActivityNewDrawer implements Navigati
 	@Override
 	public boolean onNavigationItemSelected(final MenuItem menuItem)
 	{
+		// Странный костыль, иначе не работает
+		menuItem.setChecked(true);
 		return selectItem(menuItem.getItemId(), true);
 	}
 

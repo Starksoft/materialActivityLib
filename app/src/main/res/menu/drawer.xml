@@ -11,7 +11,7 @@
             android:icon="@drawable/fab_src"
             android:title="Empty list"/>
     </group>
-
+<!--
     <group
         android:id="@+id/groupSettings"
         android:checkableBehavior="single">
@@ -22,5 +22,5 @@
         <item
             android:id="@+id/about"
             android:title="About"/>
-    </group>
+    </group>-->
 </menu>
