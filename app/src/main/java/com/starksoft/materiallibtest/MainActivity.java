@@ -2,7 +2,6 @@ package com.starksoft.materiallibtest;
 
 import android.os.Bundle;
 import android.os.Handler;
-
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
 import android.view.Menu;
@@ -48,7 +47,7 @@ public class MainActivity extends StarksoftActivityNewDrawer implements Navigati
 
 		models.add(new DrawerItemModel(0, "RecyclerListFragment", "1"));
 		models.add(new DrawerItemModel(0, "Empty RecyclerListFragment", "7"));
-		models.add(new DrawerItemModel(0, "Undef", "3"));
+		models.add(new DrawerItemModel(0, "Tabs fragment", "3"));
 
 		return models;
 	}
@@ -61,6 +60,10 @@ public class MainActivity extends StarksoftActivityNewDrawer implements Navigati
 		{
 			case R.id.filledList:
 				fragment = new MainActivityFragment();
+				break;
+
+			case R.id.tabsFragment:
+				fragment = new MainActivityTabsFragment();
 				break;
 
 			case R.id.emptyList:
