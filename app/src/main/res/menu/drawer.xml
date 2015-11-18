@@ -11,6 +11,11 @@
             android:icon="@drawable/fab_src"
             android:title="Empty list"/>
         <item
+            android:id="@+id/expandableList"
+            android:icon="@drawable/fab_src"
+            android:title="Expandable list"/>
+
+        <item
             android:id="@+id/tabsFragment"
             android:icon="@drawable/fab_src"
             android:title="Tabs"/>

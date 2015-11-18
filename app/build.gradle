@@ -20,6 +20,8 @@ android {
 }
 
 dependencies {
+    compile 'com.bignerdranch.android:expandablerecyclerview:2.0.3'
+
     compile fileTree(include: ['*.jar'], dir: 'libs')
     compile project(':lib_starksoft_material_activity')
 }

@@ -66,6 +66,10 @@ public class MainActivity extends StarksoftActivityNewDrawer implements Navigati
 				fragment = new MainActivityTabsFragment();
 				break;
 
+			case R.id.expandableList:
+				fragment = new MainActivityExpandableListFragment();
+				break;
+
 			case R.id.emptyList:
 				fragment = new MainActivityFragment();
 				Bundle b = new Bundle();
