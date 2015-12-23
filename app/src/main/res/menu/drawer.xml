@@ -1,11 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
-<menu xmlns:android="http://schemas.android.com/apk/res/android">
+<menu
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
     <group android:checkableBehavior="single">
         <item
             android:id="@+id/filledList"
             android:checked="true"
             android:icon="@mipmap/ic_launcher"
-            android:title="Filled list with 500 items"/>
+            android:title="Filled list with 500 items"
+            app:actionLayout="@layout/menu_counter"/>
         <item
             android:id="@+id/emptyList"
             android:icon="@drawable/fab_src"
@@ -15,12 +18,11 @@
             android:icon="@drawable/fab_src"
             android:title="Expandable list"/>
 
-        <item
+      <!--  <item
             android:id="@+id/tabsFragment"
             android:icon="@drawable/fab_src"
-            android:title="Tabs"/>
+            android:title="Tabs"/>-->
     </group>
-<!--
     <group
         android:id="@+id/groupSettings"
         android:checkableBehavior="single">
@@ -31,5 +33,5 @@
         <item
             android:id="@+id/about"
             android:title="About"/>
-    </group>-->
+    </group>
 </menu>

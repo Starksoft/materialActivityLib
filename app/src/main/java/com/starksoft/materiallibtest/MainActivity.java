@@ -2,15 +2,14 @@ package com.starksoft.materiallibtest;
 
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.annotation.IdRes;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.TextView;
 
-import com.starksoft.material_activity.DrawerItemModel;
 import com.starksoft.material_activity.StarksoftActivityNewDrawer;
-
-import java.util.ArrayList;
 
 public class MainActivity extends StarksoftActivityNewDrawer implements NavigationView.OnNavigationItemSelectedListener
 {
@@ -18,17 +17,13 @@ public class MainActivity extends StarksoftActivityNewDrawer implements Navigati
 	protected void onCreate(Bundle savedInstanceState)
 	{
 		super.onCreate(savedInstanceState);
-//		setContentView(R.layout.activity_main);
-
-//		setDrawerAdapter(new DrawerItemModelAdapter(this, generateData()));
-//		setDrawerClickListener(this);
 
 		getNavigationView().inflateMenu(R.menu.drawer);
 		getNavigationView().setNavigationItemSelectedListener(this);
 
 		if (savedInstanceState == null)
 		{
-			selectItem(R.id.filledList, false);
+			selectItem(R.id.filledList, 500, false);
 		}
 	}
 
@@ -37,22 +32,18 @@ public class MainActivity extends StarksoftActivityNewDrawer implements Navigati
 	{
 		// Странный костыль, иначе не работает
 		menuItem.setChecked(true);
-		return selectItem(menuItem.getItemId(), true);
+		return selectItem(menuItem.getItemId(), 500, true);
 	}
 
-	// Менюшка
-	private ArrayList<DrawerItemModel> generateData()
+	private void setMenuCounter(@IdRes int itemId, int count)
 	{
-		ArrayList<DrawerItemModel> models = new ArrayList<>();
-
-		models.add(new DrawerItemModel(0, "RecyclerListFragment", "1"));
-		models.add(new DrawerItemModel(0, "Empty RecyclerListFragment", "7"));
-		models.add(new DrawerItemModel(0, "Tabs fragment", "3"));
-
-		return models;
+		TextView view = (TextView) getNavigationView().getMenu().findItem(itemId).getActionView();
+		if (view != null)
+			view.setText(count > 0 ? String.valueOf(count) : null);
 	}
 
-	public boolean selectItem(int resId, boolean useDelay)
+
+	public boolean selectItem(@IdRes int resId, int counter, boolean useDelay)
 	{
 		Fragment fragment = null;
 
@@ -62,9 +53,9 @@ public class MainActivity extends StarksoftActivityNewDrawer implements Navigati
 				fragment = new MainActivityFragment();
 				break;
 
-			case R.id.tabsFragment:
-				fragment = new MainActivityTabsFragment();
-				break;
+//			case R.id.tabsFragment:
+//				fragment = new MainActivityTabsFragment();
+//				break;
 
 			case R.id.expandableList:
 				fragment = new MainActivityExpandableListFragment();
@@ -97,7 +88,7 @@ public class MainActivity extends StarksoftActivityNewDrawer implements Navigati
 				setActiveFragment(f);
 		}
 		selectDrawerItemAndSetTitle(resId, null);
-
+		setMenuCounter(resId, counter);
 		return fragment != null;
 	}
 
