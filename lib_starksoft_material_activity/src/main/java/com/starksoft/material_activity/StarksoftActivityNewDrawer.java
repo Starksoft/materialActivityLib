@@ -2,10 +2,10 @@ package com.starksoft.material_activity;
 
 import android.content.res.Configuration;
 import android.graphics.Canvas;
-import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.RectF;
 import android.os.Bundle;
+import android.support.annotation.IdRes;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
@@ -18,8 +18,6 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.view.ActionMode;
 import android.support.v7.view.ActionMode.Callback;
-import android.text.Spannable;
-import android.text.SpannableString;
 import android.text.TextUtils;
 import android.text.style.ReplacementSpan;
 import android.view.KeyEvent;
@@ -27,6 +25,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ListAdapter;
 import android.widget.ListView;
+import android.widget.TextView;
 
 public class StarksoftActivityNewDrawer extends AppCompatActivity
 {
@@ -129,72 +128,46 @@ public class StarksoftActivityNewDrawer extends AppCompatActivity
 		}
 	}
 
-	/**
-	 * установим адаптер для бокового меню
-	 */
-	public void setDrawerAdapter(ListAdapter newAdapter)
-	{
-		if (mNavigationView != null)
-		{
-			for (int i = 0, count = mNavigationView.getChildCount(); i < count; i++)
-			{
-				final View child = mNavigationView.getChildAt(i);
-				if (child != null && child instanceof ListView)
-				{
-					final ListView menuView = (ListView) child;
-					menuView.setAdapter(newAdapter);
-				}
-			}
-		}
-	}
-
-	public ListAdapter getDrawerAdapter()
-	{
-		for (int i = 0; i < mNavigationView.getChildCount(); i++)
-		{
-			View child = mNavigationView.getChildAt(i);
-			if (child != null && child instanceof ListView)
-				return ((ListView) child).getAdapter();
-		}
-		return null;
-	}
-
 	public void setDrawerClickListener(NavigationView.OnNavigationItemSelectedListener listener)
 	{
 		if (mNavigationView != null)
 			mNavigationView.setNavigationItemSelectedListener(listener);
 	}
 
-	public void selectDrawerItemAndSetTitle(int resId, String optTitle)
+	public void selectDrawerItemAndSetTitle(@IdRes int resId, int optCounter, String optTitle)
 	{
-		try
-		{
-			String title = mNavigationView.getMenu().findItem(resId).getTitle().toString();
-			mDrawerLayout.closeDrawer(mNavigationView);
-			setTitle(TextUtils.isEmpty(optTitle) ? title : optTitle);
-		}
-		catch (Exception e)
-		{
-			e.printStackTrace();
-		}
+		selectDrawerItemAndSetTitle(resId, optTitle);
+		setNavigationViewCounter(resId, optCounter);
 	}
 
-	public void setCounterToDrawerItem(int resId, int count)
+	public void selectDrawerItemAndSetTitle(@IdRes int resId, String optTitle)
 	{
-		MenuItem item = mNavigationView.getMenu().findItem(resId);
+		if(mDrawerLayout == null || mNavigationView == null)
+			return;
 
-		String space = "     ";
-		String result = item.getTitle() + space + count;
+		MenuItem menuItem = mNavigationView.getMenu().findItem(resId);
 
-		SpannableString spannablecontent = new SpannableString(result);
+		if(menuItem == null)
+			return;
 
-		int countLen = (count + "").length();
-		int start = result.length() - countLen;
-		spannablecontent.setSpan(new RoundedBackgroundSpan(Color.argb(120, 0, 0, 0), Color.WHITE), start, result.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-		item.setTitle(spannablecontent);
+		String title = (String) menuItem.getTitle();
 
-//		v.setEnabled(true);
+		mDrawerLayout.closeDrawer(mNavigationView);
+		setTitle(TextUtils.isEmpty(optTitle) ? title : optTitle);
+	}
 
+	public void setNavigationViewCounter(@IdRes int itemId, int count)
+	{
+		MenuItem item = getNavigationView().getMenu().findItem(itemId);
+		if (item == null)
+			return;
+
+		TextView view = (TextView) item.getActionView();
+
+		if (view == null)
+			return;
+
+		view.setText(count > 0 ? String.valueOf(count) : null);
 	}
 
 	/**
@@ -321,7 +294,6 @@ public class StarksoftActivityNewDrawer extends AppCompatActivity
 	{
 		if (mDrawerLayout.isDrawerOpen(GravityCompat.START))
 			mDrawerLayout.closeDrawer(GravityCompat.START);
-
 		else if (isActionModeRunning())
 			closeActionMode();
 		else
@@ -367,39 +339,8 @@ public class StarksoftActivityNewDrawer extends AppCompatActivity
 	public void onConfigurationChanged(Configuration newConfig)
 	{
 		super.onConfigurationChanged(newConfig);
-		// Pass any configuration change to the drawer toggls
+		// Pass any configuration change to the drawer toggles
 		if (mDrawerToggle != null)
 			mDrawerToggle.onConfigurationChanged(newConfig);
-	}
-
-	private class RoundedBackgroundSpan extends ReplacementSpan
-	{
-		private final int mPadding = 1;
-		private int mBackgroundColor;
-		private int mTextColor;
-
-		public RoundedBackgroundSpan(int backgroundColor, int textColor)
-		{
-			super();
-			mBackgroundColor = backgroundColor;
-			mTextColor = textColor;
-		}
-
-		@Override
-		public int getSize(Paint paint, CharSequence text, int start, int end, Paint.FontMetricsInt fm)
-		{
-			return (int) (mPadding + paint.measureText(text.subSequence(start, end).toString()) + mPadding);
-		}
-
-		@Override
-		public void draw(Canvas canvas, CharSequence text, int start, int end, float x, int top, int y, int bottom, Paint paint)
-		{
-			float width = paint.measureText(text.subSequence(start, end).toString());
-			RectF rect = new RectF(x, top + mPadding, x + width + 2 * mPadding, bottom);
-			paint.setColor(mBackgroundColor);
-			canvas.drawRoundRect(rect, mPadding, mPadding, paint);
-			paint.setColor(mTextColor);
-			canvas.drawText(text, start, end, x + mPadding, y, paint);
-		}
 	}
 }
