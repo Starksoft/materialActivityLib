@@ -11,12 +11,15 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.starksoft.material_activity.StarksoftActivityNewDrawer;
 import com.starksoft.material_activity.StarksoftRecyclerListFragment;
 
 public class MainActivityFragment extends StarksoftRecyclerListFragment implements SwipeRefreshLayout.OnRefreshListener
 {
-	Handler mHandler;
-	boolean isEmpty = false;
+	private Handler mHandler;
+	private boolean isEmpty = false;
+	/* If false - disables list progressbar when refreshing*/
+	static final boolean REFRESH_LIST = false;
 
 	public MainActivityFragment()
 	{}
@@ -27,15 +30,9 @@ public class MainActivityFragment extends StarksoftRecyclerListFragment implemen
 		// Инициализация кнопки нужна здесь
 		setFabEnabled(true);
 		super.onViewCreated(view, savedInstanceState);
-	}
 
-	@Override
-	public void onActivityCreated(Bundle savedInstanceState)
-	{
-		super.onActivityCreated(savedInstanceState);
-
-		LinearLayoutManager m = new LinearLayoutManager(getActivity());
-		getRecyclerListView().setLayoutManager(m);
+		LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity());
+		getRecyclerListView().setLayoutManager(linearLayoutManager);
 		getSwipeRefreshLayout().setOnRefreshListener(this);
 
 		Bundle b = getArguments();
@@ -47,7 +44,7 @@ public class MainActivityFragment extends StarksoftRecyclerListFragment implemen
 			@Override
 			public void run()
 			{
-				setEmptyText("Нет данных для отображения");
+				setEmptyText("No data!");
 
 				if (isEmpty)
 					setListAdapter(null);
@@ -90,6 +87,7 @@ public class MainActivityFragment extends StarksoftRecyclerListFragment implemen
 
 		setListAdapter(new MyAdapter(items.split(";")));
 		setHintText("Items: " + getRecyclerViewListAdapter().getItemCount());
+		((StarksoftActivityNewDrawer) getActivity()).setNavigationViewCounter(R.id.filledList, getRecyclerViewListAdapter().getItemCount());
 	}
 
 	@Override
@@ -99,7 +97,9 @@ public class MainActivityFragment extends StarksoftRecyclerListFragment implemen
 		if (!getSwipeRefreshLayout().isEnabled())
 			return;
 
-		setListShown(false);
+		if (REFRESH_LIST)
+			setListShown(false);
+
 		mHandler.postDelayed(new Runnable()
 		{
 			@Override
@@ -107,7 +107,8 @@ public class MainActivityFragment extends StarksoftRecyclerListFragment implemen
 			{
 				loadAdapter(getRecyclerViewListAdapter().getItemCount() + 1);
 				getSwipeRefreshLayout().setRefreshing(false);
-				setListShown(true);
+				if (REFRESH_LIST)
+					setListShown(true);
 			}
 		}, 2000);
 	}
@@ -116,12 +117,8 @@ public class MainActivityFragment extends StarksoftRecyclerListFragment implemen
 	{
 		private String[] mDataset;
 
-		// Provide a reference to the views for each data item
-		// Complex data items may need more than one view per item, and
-		// you provide access to all the views for a data item in a view holder
 		public class ViewHolder extends RecyclerView.ViewHolder
 		{
-			// each data item is just a string in this case
 			public TextView mTextView;
 
 			public ViewHolder(TextView v)
@@ -131,39 +128,25 @@ public class MainActivityFragment extends StarksoftRecyclerListFragment implemen
 			}
 		}
 
-		// Provide a suitable constructor (depends on the kind of dataset)
 		public MyAdapter(String[] myDataset)
 		{
 			mDataset = myDataset;
 		}
 
-		// Create new views (invoked by the layout manager)
 		@Override
 		public MyAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType)
 		{
-			// create a new view
-
-
 			TextView t = new TextView(getActivity());
 			t.setTextSize(20);
-//			t.setPadding(30, 0, 0, 0);
-			// set the view's size, margins, paddings and layout parameters
-
-			ViewHolder vh = new ViewHolder(t);
-			return vh;
+			return new ViewHolder(t);
 		}
 
-		// Replace the contents of a view (invoked by the layout manager)
 		@Override
 		public void onBindViewHolder(ViewHolder holder, int position)
 		{
-			// - get element from your dataset at this position
-			// - replace the contents of the view with that element
 			holder.mTextView.setText(mDataset[position]);
-
 		}
 
-		// Return the size of your dataset (invoked by the layout manager)
 		@Override
 		public int getItemCount()
 		{

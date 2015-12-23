@@ -19,7 +19,7 @@ public class MainActivity extends StarksoftActivityNewDrawer implements Navigati
 		super.onCreate(savedInstanceState);
 
 		getNavigationView().inflateMenu(R.menu.drawer);
-		getNavigationView().setNavigationItemSelectedListener(this);
+		setDrawerClickListener(this);
 
 		if (savedInstanceState == null)
 		{
@@ -34,14 +34,6 @@ public class MainActivity extends StarksoftActivityNewDrawer implements Navigati
 		menuItem.setChecked(true);
 		return selectItem(menuItem.getItemId(), 500, true);
 	}
-
-	private void setMenuCounter(@IdRes int itemId, int count)
-	{
-		TextView view = (TextView) getNavigationView().getMenu().findItem(itemId).getActionView();
-		if (view != null)
-			view.setText(count > 0 ? String.valueOf(count) : null);
-	}
-
 
 	public boolean selectItem(@IdRes int resId, int counter, boolean useDelay)
 	{
@@ -87,8 +79,8 @@ public class MainActivity extends StarksoftActivityNewDrawer implements Navigati
 			else
 				setActiveFragment(f);
 		}
-		selectDrawerItemAndSetTitle(resId, null);
-		setMenuCounter(resId, counter);
+//		selectDrawerItemAndSetTitle(resId, null);
+		selectDrawerItemAndSetTitle(resId, counter, null);
 		return fragment != null;
 	}
 
