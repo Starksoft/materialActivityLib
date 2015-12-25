@@ -7,7 +7,6 @@ import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.TextView;
 
 import com.starksoft.material_activity.StarksoftActivityNewDrawer;
 
@@ -72,14 +71,13 @@ public class MainActivity extends StarksoftActivityNewDrawer implements Navigati
 					@Override
 					public void run()
 					{
-						setActiveFragment(f);
+						setActiveFragment(f, true, false);
 					}
 				}, 300);
 			}
 			else
-				setActiveFragment(f);
+				setActiveFragment(f, true, false);
 		}
-//		selectDrawerItemAndSetTitle(resId, null);
 		selectDrawerItemAndSetTitle(resId, counter, null);
 		return fragment != null;
 	}
