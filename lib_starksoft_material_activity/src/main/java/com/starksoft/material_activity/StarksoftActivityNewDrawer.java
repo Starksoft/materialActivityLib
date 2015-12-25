@@ -1,9 +1,6 @@
 package com.starksoft.material_activity;
 
 import android.content.res.Configuration;
-import android.graphics.Canvas;
-import android.graphics.Paint;
-import android.graphics.RectF;
 import android.os.Bundle;
 import android.support.annotation.IdRes;
 import android.support.annotation.NonNull;
@@ -19,12 +16,9 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.view.ActionMode;
 import android.support.v7.view.ActionMode.Callback;
 import android.text.TextUtils;
-import android.text.style.ReplacementSpan;
 import android.view.KeyEvent;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.ListAdapter;
-import android.widget.ListView;
 import android.widget.TextView;
 
 public class StarksoftActivityNewDrawer extends AppCompatActivity
@@ -142,12 +136,12 @@ public class StarksoftActivityNewDrawer extends AppCompatActivity
 
 	public void selectDrawerItemAndSetTitle(@IdRes int resId, String optTitle)
 	{
-		if(mDrawerLayout == null || mNavigationView == null)
+		if (mDrawerLayout == null || mNavigationView == null)
 			return;
 
 		MenuItem menuItem = mNavigationView.getMenu().findItem(resId);
 
-		if(menuItem == null)
+		if (menuItem == null)
 			return;
 
 		String title = (String) menuItem.getTitle();
@@ -181,13 +175,21 @@ public class StarksoftActivityNewDrawer extends AppCompatActivity
 	/////////////////////////////////////////////////////////////////////////////////////////////////
 	// FragmentActivity related methods
 	/////////////////////////////////////////////////////////////////////////////////////////////////
-	@SuppressWarnings("ResourceType")
 	public void setActiveFragment(Fragment dest)
+	{
+		setActiveFragment(dest, false, false);
+	}
+
+	@SuppressWarnings("ResourceType")
+	public void setActiveFragment(@NonNull Fragment dest, boolean addToBackStack, boolean checkIfEqual)
 	{
 		if (getActionMode() != null)
 			getActionMode().finish();
 
 		String tag = dest.getClass().getName();
+		// FIXME Не очень хорошо матчить по тэгу, в тестовой либе как раз используетсяо один фрагмент с разными аргументами для одного элемента Drawer
+		if (checkIfEqual && getActiveFragment() != null && TextUtils.equals(tag, getActiveFragment().getClass().getName()))
+			return;
 
 		try
 		{
@@ -195,6 +197,9 @@ public class StarksoftActivityNewDrawer extends AppCompatActivity
 			FragmentTransaction mFragmentTransaction = fragmentManager.beginTransaction();
 			mFragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
 			// mFragmentTransaction.setCustomAnimations(android.R.animator.fade_in, android.R.animator.fade_out);
+//			if (addToBackStack)
+//				mFragmentTransaction.addToBackStack(null);
+
 			mFragmentTransaction.replace(R.id.content_frame, activeFragment = dest, tag).commit();
 		}
 		// Ловим ошибку, если в фоне меняем фрагмент, падает именно здесь
