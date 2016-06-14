@@ -13,25 +13,22 @@ import android.widget.Toast;
 
 import com.starksoft.material_activity.StarksoftRecyclerListFragment;
 
-public class MainActivityExpandableListFragment extends StarksoftRecyclerListFragment implements SwipeRefreshLayout.OnRefreshListener
-{
+public class MainActivityExpandableListFragment extends StarksoftRecyclerListFragment implements SwipeRefreshLayout.OnRefreshListener {
 	Handler mHandler;
 	boolean isEmpty = false;
 
-	public MainActivityExpandableListFragment()
-	{}
+	public MainActivityExpandableListFragment() {
+	}
 
 	@Override
-	public void onViewCreated(View view, Bundle savedInstanceState)
-	{
+	public void onViewCreated(View view, Bundle savedInstanceState) {
 		// Инициализация кнопки нужна здесь
 		setFabEnabled(true);
 		super.onViewCreated(view, savedInstanceState);
 	}
 
 	@Override
-	public void onActivityCreated(Bundle savedInstanceState)
-	{
+	public void onActivityCreated(Bundle savedInstanceState) {
 		super.onActivityCreated(savedInstanceState);
 
 		LinearLayoutManager m = new LinearLayoutManager(getActivity());
@@ -42,30 +39,22 @@ public class MainActivityExpandableListFragment extends StarksoftRecyclerListFra
 		isEmpty = b != null && b.getBoolean("empty");
 
 		mHandler = new Handler();
-		mHandler.postDelayed(new Runnable()
-		{
+		mHandler.postDelayed(new Runnable() {
 			@Override
-			public void run()
-			{
+			public void run() {
 				setEmptyText("Нет данных для отображения");
 
-				if (isEmpty)
-					setListAdapter(null);
-				else
-					loadAdapter(500);
+				if (isEmpty) setListAdapter(null);
+				else loadAdapter(500);
 			}
 		}, 1000);
 
-		getFloatingActionButton().setOnClickListener(new View.OnClickListener()
-		{
+		getFloatingActionButton().setOnClickListener(new View.OnClickListener() {
 			@Override
-			public void onClick(View v)
-			{
-				Snackbar.make(v, "TEST!", Snackbar.LENGTH_LONG).setAction("ACTION!", new View.OnClickListener()
-				{
+			public void onClick(View v) {
+				Snackbar.make(v, "TEST!", Snackbar.LENGTH_LONG).setAction("ACTION!", new View.OnClickListener() {
 					@Override
-					public void onClick(View v)
-					{
+					public void onClick(View v) {
 						Toast.makeText(getActivity(), "Fired action!", Toast.LENGTH_LONG).show();
 					}
 				}).show();
@@ -74,18 +63,15 @@ public class MainActivityExpandableListFragment extends StarksoftRecyclerListFra
 	}
 
 	@Override
-	public void onDestroy()
-	{
+	public void onDestroy() {
 		super.onDestroy();
 
-		if (mHandler != null)
+		if (mHandler != null) {
 			mHandler.removeCallbacksAndMessages(null);
+		}
 	}
 
-	private void loadAdapter(int count)
-	{
-
-
+	private void loadAdapter(int count) {
 		String items = "";
 		for (int i = 0; i < count; i++)
 			items += "Item  " + (i + 1) + ";";
@@ -95,18 +81,16 @@ public class MainActivityExpandableListFragment extends StarksoftRecyclerListFra
 	}
 
 	@Override
-	public void onRefresh()
-	{
+	public void onRefresh() {
 		// Это защищает от ложных срабатываний, при отстутствии адаптера
-		if (!getSwipeRefreshLayout().isEnabled())
+		if (!getSwipeRefreshLayout().isEnabled()) {
 			return;
+		}
 
 		setListShown(false);
-		mHandler.postDelayed(new Runnable()
-		{
+		mHandler.postDelayed(new Runnable() {
 			@Override
-			public void run()
-			{
+			public void run() {
 				loadAdapter(getRecyclerViewListAdapter().getItemCount() + 1);
 				getSwipeRefreshLayout().setRefreshing(false);
 				setListShown(true);
@@ -114,41 +98,36 @@ public class MainActivityExpandableListFragment extends StarksoftRecyclerListFra
 		}, 2000);
 	}
 
-	class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder>
-	{
+	class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
 		private String[] mDataset;
 
 		// Provide a reference to the views for each data item
 		// Complex data items may need more than one view per item, and
 		// you provide access to all the views for a data item in a view holder
-		public class ViewHolder extends RecyclerView.ViewHolder
-		{
+		public class ViewHolder extends RecyclerView.ViewHolder {
 			// each data item is just a string in this case
 			public TextView mTextView;
 
-			public ViewHolder(TextView v)
-			{
+			public ViewHolder(TextView v) {
 				super(v);
 				mTextView = v;
 			}
 		}
 
 		// Provide a suitable constructor (depends on the kind of dataset)
-		public MyAdapter(String[] myDataset)
-		{
+		public MyAdapter(String[] myDataset) {
 			mDataset = myDataset;
 		}
 
 		// Create new views (invoked by the layout manager)
 		@Override
-		public MyAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType)
-		{
+		public MyAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
 			// create a new view
 
 
 			TextView t = new TextView(getActivity());
 			t.setTextSize(20);
-//			t.setPadding(30, 0, 0, 0);
+			//			t.setPadding(30, 0, 0, 0);
 			// set the view's size, margins, paddings and layout parameters
 
 			ViewHolder vh = new ViewHolder(t);
@@ -157,8 +136,7 @@ public class MainActivityExpandableListFragment extends StarksoftRecyclerListFra
 
 		// Replace the contents of a view (invoked by the layout manager)
 		@Override
-		public void onBindViewHolder(ViewHolder holder, int position)
-		{
+		public void onBindViewHolder(ViewHolder holder, int position) {
 			// - get element from your dataset at this position
 			// - replace the contents of the view with that element
 			holder.mTextView.setText(mDataset[position]);
@@ -167,8 +145,7 @@ public class MainActivityExpandableListFragment extends StarksoftRecyclerListFra
 
 		// Return the size of your dataset (invoked by the layout manager)
 		@Override
-		public int getItemCount()
-		{
+		public int getItemCount() {
 			return mDataset.length;
 		}
 	}

@@ -6,36 +6,33 @@ import android.graphics.drawable.Drawable;
 import android.util.AttributeSet;
 import android.widget.ProgressBar;
 
-public class TintedProgressBar extends ProgressBar
-{
-	public TintedProgressBar(Context context)
-	{
+public class TintedProgressBar extends ProgressBar {
+	public TintedProgressBar(Context context) {
 		super(context);
 		init();
 	}
 
-	public TintedProgressBar(Context context, AttributeSet attrs)
-	{
+	public TintedProgressBar(Context context, AttributeSet attrs) {
 		super(context, attrs);
 		init();
 	}
 
-	public TintedProgressBar(Context context, AttributeSet attrs, int defStyleAttr)
-	{
+	public TintedProgressBar(Context context, AttributeSet attrs, int defStyleAttr) {
 		super(context, attrs, defStyleAttr);
 		init();
 	}
 
-	public void init()
-	{
+	public void init() {
 		Drawable indeterminateDrawable = getIndeterminateDrawable();
 		Drawable progressDrawable = getProgressDrawable();
 
-		if (indeterminateDrawable != null)
+		if (indeterminateDrawable != null) {
 			indeterminateDrawable.setColorFilter(getResources().getColor(R.color.colorPrimary), PorterDuff.Mode.SRC_IN);
+		}
 
-		if (progressDrawable != null)
+		if (progressDrawable != null) {
 			progressDrawable.setColorFilter(getResources().getColor(R.color.colorPrimary), PorterDuff.Mode.SRC_IN);
+		}
 
 	}
 }

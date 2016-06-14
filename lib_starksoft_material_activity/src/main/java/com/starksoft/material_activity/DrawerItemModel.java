@@ -1,64 +1,53 @@
 package com.starksoft.material_activity;
 
-public class DrawerItemModel
-{
+public class DrawerItemModel {
 	private int icon;
 	private String title;
 	private String counter;
 
 	private boolean isGroupHeader = false;
 
-	public DrawerItemModel(String title)
-	{
+	public DrawerItemModel(String title) {
 		this(-1, title, null);
 		isGroupHeader = true;
 	}
 
-	public DrawerItemModel(int icon, String title, String counter)
-	{
+	public DrawerItemModel(int icon, String title, String counter) {
 		// super();
 		this.icon = icon;
 		this.title = title;
 		this.counter = counter;
 	}
 
-	public int getIcon()
-	{
+	public int getIcon() {
 		return icon;
 	}
 
-	public void setIcon(int icon)
-	{
+	public void setIcon(int icon) {
 		this.icon = icon;
 	}
 
-	public String getTitle()
-	{
+	public String getTitle() {
 		return title;
 	}
 
-	public void setTitle(String title)
-	{
+	public void setTitle(String title) {
 		this.title = title;
 	}
 
-	public String getCounter()
-	{
+	public String getCounter() {
 		return counter;
 	}
 
-	public void setCounter(String counter)
-	{
+	public void setCounter(String counter) {
 		this.counter = counter;
 	}
 
-	public boolean isGroupHeader()
-	{
+	public boolean isGroupHeader() {
 		return isGroupHeader;
 	}
 
-	public void setGroupHeader(boolean isGroupHeader)
-	{
+	public void setGroupHeader(boolean isGroupHeader) {
 		this.isGroupHeader = isGroupHeader;
 	}
 }

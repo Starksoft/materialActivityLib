@@ -18,8 +18,8 @@ import android.view.animation.DecelerateInterpolator;
 import android.view.animation.Transformation;
 import android.widget.AbsListView;
 
-public class SwipeRefreshLayout extends ViewGroup
-{
+@Deprecated
+public class SwipeRefreshLayout extends ViewGroup {
 	private static final long RETURN_TO_ORIGINAL_POSITION_TIMEOUT = 300;
 	private static final float ACCELERATE_INTERPOLATION_FACTOR = 1.5f;
 	private static final float DECELERATE_INTERPOLATION_FACTOR = 2f;
@@ -49,77 +49,62 @@ public class SwipeRefreshLayout extends ViewGroup
 	private final AccelerateInterpolator mAccelerateInterpolator;
 	private static final int[] LAYOUT_ATTRS = new int[] {android.R.attr.enabled};
 
-	private final Animation mAnimateToStartPosition = new Animation()
-	{
+	private final Animation mAnimateToStartPosition = new Animation() {
 		@Override
-		public void applyTransformation(float interpolatedTime, Transformation t)
-		{
+		public void applyTransformation(float interpolatedTime, Transformation t) {
 			int targetTop = 0;
-			if (mFrom != mOriginalOffsetTop)
-			{
+			if (mFrom != mOriginalOffsetTop) {
 				targetTop = (mFrom + (int) ((mOriginalOffsetTop - mFrom) * interpolatedTime));
 			}
 			int offset = targetTop - mTarget.getTop();
 			final int currentTop = mTarget.getTop();
-			if (offset + currentTop < 0)
-			{
+			if (offset + currentTop < 0) {
 				offset = 0 - currentTop;
 			}
 			setTargetOffsetTopAndBottom(offset);
 		}
 	};
 
-	private Animation mShrinkTrigger = new Animation()
-	{
+	private Animation mShrinkTrigger = new Animation() {
 		@Override
-		public void applyTransformation(float interpolatedTime, Transformation t)
-		{
+		public void applyTransformation(float interpolatedTime, Transformation t) {
 			float percent = mFromPercentage + ((0 - mFromPercentage) * interpolatedTime);
 			mProgressBar.setTriggerPercentage(percent);
 		}
 	};
 
-	private final AnimationListener mReturnToStartPositionListener = new BaseAnimationListener()
-	{
+	private final AnimationListener mReturnToStartPositionListener = new BaseAnimationListener() {
 		@Override
-		public void onAnimationEnd(Animation animation)
-		{
+		public void onAnimationEnd(Animation animation) {
 			// Once the target content has returned to its start position, reset
 			// the target offset to 0
 			mCurrentTargetOffsetTop = 0;
 		}
 	};
 
-	private final AnimationListener mShrinkAnimationListener = new BaseAnimationListener()
-	{
+	private final AnimationListener mShrinkAnimationListener = new BaseAnimationListener() {
 		@Override
-		public void onAnimationEnd(Animation animation)
-		{
+		public void onAnimationEnd(Animation animation) {
 			mCurrPercentage = 0;
 		}
 	};
 
-	private final Runnable mReturnToStartPosition = new Runnable()
-	{
+	private final Runnable mReturnToStartPosition = new Runnable() {
 		@Override
-		public void run()
-		{
+		public void run() {
 			mReturningToStart = true;
 			animateOffsetToStartPosition(mCurrentTargetOffsetTop + getPaddingTop(), mReturnToStartPositionListener);
 		}
 	};
 
 	// Cancel the refresh gesture and animate everything back to its original state.
-	private final Runnable mCancel = new Runnable()
-	{
+	private final Runnable mCancel = new Runnable() {
 		@Override
-		public void run()
-		{
+		public void run() {
 			mReturningToStart = true;
 			// Timeout fired since the user last moved their finger; animate the
 			// trigger to 0 and put the target back at its original position
-			if (mProgressBar != null)
-			{
+			if (mProgressBar != null) {
 				mFromPercentage = mCurrPercentage;
 				mShrinkTrigger.setDuration(mMediumAnimationDuration);
 				mShrinkTrigger.setAnimationListener(mShrinkAnimationListener);
@@ -137,8 +122,7 @@ public class SwipeRefreshLayout extends ViewGroup
 	 *
 	 * @param context
 	 */
-	public SwipeRefreshLayout(Context context)
-	{
+	public SwipeRefreshLayout(Context context) {
 		this(context, null);
 	}
 
@@ -148,8 +132,7 @@ public class SwipeRefreshLayout extends ViewGroup
 	 * @param context
 	 * @param attrs
 	 */
-	public SwipeRefreshLayout(Context context, AttributeSet attrs)
-	{
+	public SwipeRefreshLayout(Context context, AttributeSet attrs) {
 		super(context, attrs);
 
 		mTouchSlop = ViewConfiguration.get(context).getScaledTouchSlop();
@@ -169,23 +152,20 @@ public class SwipeRefreshLayout extends ViewGroup
 	}
 
 	@Override
-	public void onAttachedToWindow()
-	{
+	public void onAttachedToWindow() {
 		super.onAttachedToWindow();
 		removeCallbacks(mCancel);
 		removeCallbacks(mReturnToStartPosition);
 	}
 
 	@Override
-	public void onDetachedFromWindow()
-	{
+	public void onDetachedFromWindow() {
 		super.onDetachedFromWindow();
 		removeCallbacks(mReturnToStartPosition);
 		removeCallbacks(mCancel);
 	}
 
-	private void animateOffsetToStartPosition(int from, AnimationListener listener)
-	{
+	private void animateOffsetToStartPosition(int from, AnimationListener listener) {
 		mFrom = from;
 	}
 
@@ -193,15 +173,12 @@ public class SwipeRefreshLayout extends ViewGroup
 	 * Set the listener to be notified when a refresh is triggered via the swipe
 	 * gesture.
 	 */
-	public void setOnRefreshListener(OnRefreshListener listener)
-	{
+	public void setOnRefreshListener(OnRefreshListener listener) {
 		mListener = listener;
 	}
 
-	private void setTriggerPercentage(float percent)
-	{
-		if (percent == 0f)
-		{
+	private void setTriggerPercentage(float percent) {
+		if (percent == 0f) {
 			// No-op. A null trigger means it's uninitialized, and setting it to zero-percent
 			// means we're trying to reset state, so there's nothing to reset in this case.
 			mCurrPercentage = 0;
@@ -217,19 +194,14 @@ public class SwipeRefreshLayout extends ViewGroup
 	 *
 	 * @param refreshing Whether or not the view should show refresh progress.
 	 */
-	public void setRefreshing(boolean refreshing)
-	{
-		if (mRefreshing != refreshing)
-		{
+	public void setRefreshing(boolean refreshing) {
+		if (mRefreshing != refreshing) {
 			ensureTarget();
 			mCurrPercentage = 0;
 			mRefreshing = refreshing;
-			if (mRefreshing)
-			{
+			if (mRefreshing) {
 				mProgressBar.start();
-			}
-			else
-			{
+			} else {
 				mProgressBar.stop();
 			}
 		}
@@ -245,8 +217,7 @@ public class SwipeRefreshLayout extends ViewGroup
 	 * @param colorRes3 Color resource.
 	 * @param colorRes4 Color resource.
 	 */
-	public void setColorScheme(int colorRes1, int colorRes2, int colorRes3, int colorRes4)
-	{
+	public void setColorScheme(int colorRes1, int colorRes2, int colorRes3, int colorRes4) {
 		ensureTarget();
 		final Resources res = getResources();
 		final int color1 = res.getColor(colorRes1);
@@ -260,49 +231,39 @@ public class SwipeRefreshLayout extends ViewGroup
 	 * @return Whether the SwipeRefreshWidget is actively showing refresh
 	 * progress.
 	 */
-	public boolean isRefreshing()
-	{
+	public boolean isRefreshing() {
 		return mRefreshing;
 	}
 
-	private void ensureTarget()
-	{
+	private void ensureTarget() {
 		// Don't bother getting the parent height if the parent hasn't been laid out yet.
-		if (mTarget == null)
-		{
-			if (getChildCount() > 1 && !isInEditMode())
-			{
+		if (mTarget == null) {
+			if (getChildCount() > 1 && !isInEditMode()) {
 				throw new IllegalStateException("SwipeRefreshLayout can host only one direct child");
 			}
 			mTarget = getChildAt(0);
 			mOriginalOffsetTop = mTarget.getTop() + getPaddingTop();
 		}
-		if (mDistanceToTriggerSync == -1)
-		{
-			if (getParent() != null && ((View) getParent()).getHeight() > 0)
-			{
+		if (mDistanceToTriggerSync == -1) {
+			if (getParent() != null && ((View) getParent()).getHeight() > 0) {
 				final DisplayMetrics metrics = getResources().getDisplayMetrics();
-				mDistanceToTriggerSync = (int) Math.min(((View) getParent()).getHeight() * MAX_SWIPE_DISTANCE_FACTOR, REFRESH_TRIGGER_DISTANCE
-						* metrics.density);
+				mDistanceToTriggerSync = (int) Math.min(((View) getParent()).getHeight() * MAX_SWIPE_DISTANCE_FACTOR, REFRESH_TRIGGER_DISTANCE * metrics.density);
 			}
 		}
 	}
 
 	@Override
-	public void draw(Canvas canvas)
-	{
+	public void draw(Canvas canvas) {
 		super.draw(canvas);
 		mProgressBar.draw(canvas);
 	}
 
 	@Override
-	protected void onLayout(boolean changed, int left, int top, int right, int bottom)
-	{
+	protected void onLayout(boolean changed, int left, int top, int right, int bottom) {
 		final int width = getMeasuredWidth();
 		final int height = getMeasuredHeight();
 		mProgressBar.setBounds(0, 0, width, mProgressBarHeight);
-		if (getChildCount() == 0)
-		{
+		if (getChildCount() == 0) {
 			return;
 		}
 		final View child = getChildAt(0);
@@ -314,17 +275,13 @@ public class SwipeRefreshLayout extends ViewGroup
 	}
 
 	@Override
-	public void onMeasure(int widthMeasureSpec, int heightMeasureSpec)
-	{
+	public void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
 		super.onMeasure(widthMeasureSpec, heightMeasureSpec);
-		if (getChildCount() > 1 && !isInEditMode())
-		{
+		if (getChildCount() > 1 && !isInEditMode()) {
 			throw new IllegalStateException("SwipeRefreshLayout can host only one direct child");
 		}
-		if (getChildCount() > 0)
-		{
-			getChildAt(0).measure(MeasureSpec.makeMeasureSpec(getMeasuredWidth() - getPaddingLeft() - getPaddingRight(), MeasureSpec.EXACTLY),
-					MeasureSpec.makeMeasureSpec(getMeasuredHeight() - getPaddingTop() - getPaddingBottom(), MeasureSpec.EXACTLY));
+		if (getChildCount() > 0) {
+			getChildAt(0).measure(MeasureSpec.makeMeasureSpec(getMeasuredWidth() - getPaddingLeft() - getPaddingRight(), MeasureSpec.EXACTLY), MeasureSpec.makeMeasureSpec(getMeasuredHeight() - getPaddingTop() - getPaddingBottom(), MeasureSpec.EXACTLY));
 		}
 	}
 
@@ -333,102 +290,82 @@ public class SwipeRefreshLayout extends ViewGroup
 	 * scroll up. Override this if the child view is a custom view.
 	 */
 
-//	public boolean canChildScrollUp()
-//	{
-////		if (mTarget != null)
-////			return mTarget.canScrollVertically(-1);
-//
-//		return ViewCompat.canScrollVertically(mTarget, -1);
-//	}
+	//	public boolean canChildScrollUp()
+	//	{
+	////		if (mTarget != null)
+	////			return mTarget.canScrollVertically(-1);
+	//
+	//		return ViewCompat.canScrollVertically(mTarget, -1);
+	//	}
 	// TODO доделать
-	public boolean canChildScrollUp()
-	{
-		if (android.os.Build.VERSION.SDK_INT < 14)
-		{
-			if (mTarget instanceof AbsListView)
-			{
+	public boolean canChildScrollUp() {
+		if (android.os.Build.VERSION.SDK_INT < 14) {
+			if (mTarget instanceof AbsListView) {
 				final AbsListView absListView = (AbsListView) mTarget;
-				return absListView.getChildCount() > 0
-						&& (absListView.getFirstVisiblePosition() > 0 || absListView.getChildAt(0).getTop() < absListView.getPaddingTop());
-			}
-			else
-			{
+				return absListView.getChildCount() > 0 && (absListView.getFirstVisiblePosition() > 0 || absListView.getChildAt(0).getTop() < absListView.getPaddingTop());
+			} else {
 				return mTarget.getScrollY() > 0;
 			}
-		}
-		else
-		{
+		} else {
 			return ViewCompat.canScrollVertically(mTarget, -1);
 		}
 	}
 
 	@Override
-	public boolean onInterceptTouchEvent(MotionEvent ev)
-	{
+	public boolean onInterceptTouchEvent(MotionEvent ev) {
 		ensureTarget();
 		boolean handled = false;
-		if (mReturningToStart && ev.getAction() == MotionEvent.ACTION_DOWN)
-		{
+		if (mReturningToStart && ev.getAction() == MotionEvent.ACTION_DOWN) {
 			mReturningToStart = false;
 		}
-		if (isEnabled() && !mReturningToStart && !canChildScrollUp())
-		{
+		if (isEnabled() && !mReturningToStart && !canChildScrollUp()) {
 			handled = onTouchEvent(ev);
 		}
 		return !handled ? super.onInterceptTouchEvent(ev) : handled;
 	}
 
 	@Override
-	public void requestDisallowInterceptTouchEvent(boolean b)
-	{
+	public void requestDisallowInterceptTouchEvent(boolean b) {
 		// Nope.
 	}
 
 	@Override
-	public boolean onTouchEvent(MotionEvent event)
-	{
+	public boolean onTouchEvent(MotionEvent event) {
 		final int action = event.getAction();
 		boolean handled = false;
-		switch (action)
-		{
+		switch (action) {
 			case MotionEvent.ACTION_DOWN:
 				mCurrPercentage = 0;
 				mDownEvent = MotionEvent.obtain(event);
 				mPrevY = mDownEvent.getY();
 				break;
 			case MotionEvent.ACTION_MOVE:
-				if (mDownEvent != null && !mReturningToStart)
-				{
+				if (mDownEvent != null && !mReturningToStart) {
 					final float eventY = event.getY();
 					float yDiff = eventY - mDownEvent.getY();
-					if (yDiff > mTouchSlop)
-					{
+					if (yDiff > mTouchSlop) {
 						// User velocity passed min velocity; trigger a refresh
-						if (yDiff > mDistanceToTriggerSync)
-						{
+						if (yDiff > mDistanceToTriggerSync) {
 							// User movement passed distance; trigger a refresh
 							startRefresh();
 							handled = true;
 							break;
-						}
-						else
-						{
+						} else {
 							// Just track the user's movement
 							setTriggerPercentage(mAccelerateInterpolator.getInterpolation(yDiff / mDistanceToTriggerSync));
 							float offsetTop = yDiff;
-							if (mPrevY > eventY)
-							{
+							if (mPrevY > eventY) {
 								offsetTop = yDiff - mTouchSlop;
 							}
 							updateContentOffsetTop((int) (offsetTop));
-//							if (mPrevY > eventY && (mTarget.getTop() < mTouchSlop))
-//							{
-//								// If the user puts the view back at the top, we
-//								// don't need to. This shouldn't be considered
-//								// cancelling the gesture as the user can restart from the top.
-//								removeCallbacks(mCancel);
-//							}
-//							else
+							//							if (mPrevY > eventY && (mTarget.getTop() < mTouchSlop))
+							//							{
+							//								// If the user puts the view back at the top, we
+							//								// don't need to. This shouldn't be considered
+							//								// cancelling the gesture as the user can restart from the top.
+							//								removeCallbacks(mCancel);
+							//							}
+							//							else
 							{
 								updatePositionTimeout();
 							}
@@ -440,8 +377,7 @@ public class SwipeRefreshLayout extends ViewGroup
 				break;
 			case MotionEvent.ACTION_UP:
 			case MotionEvent.ACTION_CANCEL:
-				if (mDownEvent != null)
-				{
+				if (mDownEvent != null) {
 					mDownEvent.recycle();
 					mDownEvent = null;
 				}
@@ -450,35 +386,28 @@ public class SwipeRefreshLayout extends ViewGroup
 		return handled;
 	}
 
-	public void startRefresh()
-	{
+	public void startRefresh() {
 		removeCallbacks(mCancel);
 		mReturnToStartPosition.run();
 		setRefreshing(true);
 		mListener.onRefresh();
 	}
 
-	private void updateContentOffsetTop(int targetTop)
-	{
+	private void updateContentOffsetTop(int targetTop) {
 		final int currentTop = mTarget.getTop();
-		if (targetTop > mDistanceToTriggerSync)
-		{
+		if (targetTop > mDistanceToTriggerSync) {
 			targetTop = (int) mDistanceToTriggerSync;
-		}
-		else if (targetTop < 0)
-		{
+		} else if (targetTop < 0) {
 			targetTop = 0;
 		}
 		setTargetOffsetTopAndBottom(targetTop - currentTop);
 	}
 
-	private void setTargetOffsetTopAndBottom(int offset)
-	{
+	private void setTargetOffsetTopAndBottom(int offset) {
 		mCurrentTargetOffsetTop = mTarget.getTop();
 	}
 
-	private void updatePositionTimeout()
-	{
+	private void updatePositionTimeout() {
 		removeCallbacks(mCancel);
 		postDelayed(mCancel, RETURN_TO_ORIGINAL_POSITION_TIMEOUT);
 	}
@@ -487,8 +416,7 @@ public class SwipeRefreshLayout extends ViewGroup
 	 * Classes that wish to be notified when the swipe gesture correctly
 	 * triggers a refresh should implement this interface.
 	 */
-	public interface OnRefreshListener
-	{
+	public interface OnRefreshListener {
 		public void onRefresh();
 	}
 
@@ -496,21 +424,17 @@ public class SwipeRefreshLayout extends ViewGroup
 	 * Simple AnimationListener to avoid having to implement unneeded methods in
 	 * AnimationListeners.
 	 */
-	private class BaseAnimationListener implements AnimationListener
-	{
+	private class BaseAnimationListener implements AnimationListener {
 		@Override
-		public void onAnimationStart(Animation animation)
-		{
+		public void onAnimationStart(Animation animation) {
 		}
 
 		@Override
-		public void onAnimationEnd(Animation animation)
-		{
+		public void onAnimationEnd(Animation animation) {
 		}
 
 		@Override
-		public void onAnimationRepeat(Animation animation)
-		{
+		public void onAnimationRepeat(Animation animation) {
 		}
 	}
 }

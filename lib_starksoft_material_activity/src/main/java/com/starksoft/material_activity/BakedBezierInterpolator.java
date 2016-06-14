@@ -21,20 +21,17 @@ import android.view.animation.Interpolator;
 /**
  * A pre-baked bezier-curved interpolator for indeterminate progress animations.
  */
-final class BakedBezierInterpolator implements Interpolator
-{
+final class BakedBezierInterpolator implements Interpolator {
 	private static final BakedBezierInterpolator INSTANCE = new BakedBezierInterpolator();
 
-	public final static BakedBezierInterpolator getInstance()
-	{
+	public final static BakedBezierInterpolator getInstance() {
 		return INSTANCE;
 	}
 
 	/**
 	 * Use getInstance instead of instantiating.
 	 */
-	private BakedBezierInterpolator()
-	{
+	private BakedBezierInterpolator() {
 		super();
 	}
 
@@ -64,21 +61,16 @@ final class BakedBezierInterpolator implements Interpolator
 	private static final float STEP_SIZE = 1.0f / (VALUES.length - 1);
 
 	@Override
-	public float getInterpolation(float input)
-	{
-		if (input >= 1.0f)
-		{
+	public float getInterpolation(float input) {
+		if (input >= 1.0f) {
 			return 1.0f;
 		}
 
-		if (input <= 0f)
-		{
+		if (input <= 0f) {
 			return 0f;
 		}
 
-		int position = Math.min(
-				(int) (input * (VALUES.length - 1)),
-				VALUES.length - 2);
+		int position = Math.min((int) (input * (VALUES.length - 1)), VALUES.length - 2);
 
 		float quantized = position * STEP_SIZE;
 		float difference = input - quantized;

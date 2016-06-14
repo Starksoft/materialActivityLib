@@ -10,43 +10,37 @@ import android.view.MenuItem;
 
 import com.starksoft.material_activity.StarksoftActivityNewDrawer;
 
-public class MainActivity extends StarksoftActivityNewDrawer implements NavigationView.OnNavigationItemSelectedListener
-{
+public class MainActivity extends StarksoftActivityNewDrawer implements NavigationView.OnNavigationItemSelectedListener {
 	@Override
-	protected void onCreate(Bundle savedInstanceState)
-	{
+	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
 		getNavigationView().inflateMenu(R.menu.drawer);
 		setDrawerClickListener(this);
 
-		if (savedInstanceState == null)
-		{
+		if (savedInstanceState == null) {
 			selectItem(R.id.filledList, 500, false);
 		}
 	}
 
 	@Override
-	public boolean onNavigationItemSelected(final MenuItem menuItem)
-	{
+	public boolean onNavigationItemSelected(final MenuItem menuItem) {
 		// Странный костыль, иначе не работает
 		menuItem.setChecked(true);
 		return selectItem(menuItem.getItemId(), 500, true);
 	}
 
-	public boolean selectItem(@IdRes int resId, int counter, boolean useDelay)
-	{
+	public boolean selectItem(@IdRes int resId, int counter, boolean useDelay) {
 		Fragment fragment = null;
 
-		switch (resId)
-		{
+		switch (resId) {
 			case R.id.filledList:
 				fragment = new MainActivityFragment();
 				break;
 
-//			case R.id.tabsFragment:
-//				fragment = new MainActivityTabsFragment();
-//				break;
+			//			case R.id.tabsFragment:
+			//				fragment = new MainActivityTabsFragment();
+			//				break;
 
 			case R.id.expandableList:
 				fragment = new MainActivityExpandableListFragment();
@@ -59,52 +53,42 @@ public class MainActivity extends StarksoftActivityNewDrawer implements Navigati
 				fragment.setArguments(b);
 				break;
 		}
-		if (fragment != null)
-		{
+		if (fragment != null) {
 			// setActiveFragment(fragment);
 			final Fragment f = fragment;
 			// Убираем лаг при переключении
-			if (useDelay)
-			{
-				new Handler().postDelayed(new Runnable()
-				{
+			if (useDelay) {
+				new Handler().postDelayed(new Runnable() {
 					@Override
-					public void run()
-					{
+					public void run() {
 						setActiveFragment(f, true, false);
 					}
 				}, 300);
-			}
-			else
-				setActiveFragment(f, true, false);
+			} else setActiveFragment(f, true, false);
 		}
 		selectDrawerItemAndSetTitle(resId, counter, null);
 		return fragment != null;
 	}
 
 	@Override
-	public boolean onCreateOptionsMenu(Menu menu)
-	{
+	public boolean onCreateOptionsMenu(Menu menu) {
 		// Inflate the menu; this adds items to the action bar if it is present.
 		getMenuInflater().inflate(R.menu.menu_main, menu);
 		return true;
 	}
 
 	@Override
-	public boolean onOptionsItemSelected(MenuItem item)
-	{
+	public boolean onOptionsItemSelected(MenuItem item) {
 		// Handle action bar item clicks here. The action bar will
 		// automatically handle clicks on the Home/Up button, so long
 		// as you specify a parent activity in AndroidManifest.xml.
 		int id = item.getItemId();
 
 		//noinspection SimplifiableIfStatement
-		if (id == R.id.action_settings)
-		{
+		if (id == R.id.action_settings) {
 			return true;
 		}
 
 		return super.onOptionsItemSelected(item);
 	}
-
 }

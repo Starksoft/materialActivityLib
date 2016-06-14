@@ -11,21 +11,18 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 
-public class DrawerItemModelAdapter extends ArrayAdapter<DrawerItemModel>
-{
+public class DrawerItemModelAdapter extends ArrayAdapter<DrawerItemModel> {
 	private final Context context;
 	public final ArrayList<DrawerItemModel> modelsArrayList;
 
-	public DrawerItemModelAdapter(Context context, ArrayList<DrawerItemModel> modelsArrayList)
-	{
+	public DrawerItemModelAdapter(Context context, ArrayList<DrawerItemModel> modelsArrayList) {
 		super(context, R.layout.drawer_target_item, modelsArrayList);
 
 		this.context = context;
 		this.modelsArrayList = modelsArrayList;
 	}
 
-	static class ViewHolder
-	{
+	static class ViewHolder {
 		ImageView iconImageView;
 
 		TextView titleTextView;
@@ -34,19 +31,18 @@ public class DrawerItemModelAdapter extends ArrayAdapter<DrawerItemModel>
 	}
 
 	@Override
-	public View getView(int position, View convertView, ViewGroup parent)
-	{
+	public View getView(int position, View convertView, ViewGroup parent) {
 		ViewHolder holder;
 		// ListView mListView = (ListView) parent;
 
 		boolean isHeader = modelsArrayList.get(position).isGroupHeader();
 
-		if (convertView == null)
-		{
-			if (isHeader)
+		if (convertView == null) {
+			if (isHeader) {
 				convertView = ((LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE)).inflate(R.layout.drawer_group_header_item, parent, false);
-			else
+			} else {
 				convertView = ((LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE)).inflate(R.layout.drawer_target_item, parent, false);
+			}
 
 			holder = new ViewHolder();
 
@@ -56,13 +52,12 @@ public class DrawerItemModelAdapter extends ArrayAdapter<DrawerItemModel>
 			holder.headerTitleTextView = (TextView) convertView.findViewById(R.id.header);
 
 			convertView.setTag(holder);
-		}
-		else
+		} else {
 			holder = (ViewHolder) convertView.getTag();
+		}
 
 		// Это заголовок
-		if (isHeader)
-		{
+		if (isHeader) {
 			// если это заголовок - надо отключить нажатие на него
 			convertView.setEnabled(false);
 			convertView.setOnClickListener(null);
@@ -70,16 +65,13 @@ public class DrawerItemModelAdapter extends ArrayAdapter<DrawerItemModel>
 			holder.headerTitleTextView.setText(modelsArrayList.get(position).getTitle());
 		}
 		// Это обычный элемент меню
-		else
-		{
+		else {
 			convertView.setEnabled(true);
 
 			int icon = modelsArrayList.get(position).getIcon();
 			// Если иконку нам не передали, убираем вьюшку
-			if (icon <= 0)
-				holder.iconImageView.setVisibility(View.GONE);
-			else
-			{
+			if (icon <= 0) holder.iconImageView.setVisibility(View.GONE);
+			else {
 				holder.iconImageView.setVisibility(View.VISIBLE);
 				holder.iconImageView.setImageResource(modelsArrayList.get(position).getIcon());
 			}
@@ -88,10 +80,9 @@ public class DrawerItemModelAdapter extends ArrayAdapter<DrawerItemModel>
 
 			String itemCounter = modelsArrayList.get(position).getCounter();
 			// Если каунтер пустой - скрываем вью
-			if (TextUtils.isEmpty(itemCounter) || TextUtils.equals(itemCounter, "0"))
+			if (TextUtils.isEmpty(itemCounter) || TextUtils.equals(itemCounter, "0")) {
 				holder.counterTextView.setVisibility(View.GONE);
-			else
-			{
+			} else {
 				holder.counterTextView.setVisibility(View.VISIBLE);
 				holder.counterTextView.setText(itemCounter);
 			}

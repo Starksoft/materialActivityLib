@@ -13,8 +13,7 @@ import android.view.ViewGroup;
 import android.view.animation.AnimationUtils;
 import android.widget.TextView;
 
-public class StarksoftRecyclerListFragment extends Fragment
-{
+public class StarksoftRecyclerListFragment extends Fragment {
 	static final int INTERNAL_EMPTY_ID = R.id.emptyTextView;
 	static final int INTERNAL_PROGRESS_CONTAINER_ID = R.id.progressBar;
 	static final int INTERNAL_LIST_CONTAINER_ID = R.id.swipeRefreshLayout;
@@ -24,10 +23,8 @@ public class StarksoftRecyclerListFragment extends Fragment
 	private boolean isFabEnabled = false;
 
 	final private Handler mHandler = new Handler();
-	final private Runnable mRequestFocus = new Runnable()
-	{
-		public void run()
-		{
+	final private Runnable mRequestFocus = new Runnable() {
+		public void run() {
 			mList.focusableViewAvailable(mList);
 		}
 	};
@@ -44,57 +41,47 @@ public class StarksoftRecyclerListFragment extends Fragment
 	SwipeRefreshLayout mSwipeRefreshLayout;
 	FloatingActionButton mFloatingActionButton;
 
-	public StarksoftRecyclerListFragment()
-	{}
+	public StarksoftRecyclerListFragment() {
+	}
 
-	public SwipeRefreshLayout getSwipeRefreshLayout()
-	{
+	public SwipeRefreshLayout getSwipeRefreshLayout() {
 		return mSwipeRefreshLayout;
 	}
 
-	public void setSwipeRefreshLayoutOnRefreshListener(SwipeRefreshLayout.OnRefreshListener listener)
-	{
-		if (mSwipeRefreshLayout == null)
-			throw new RuntimeException("Can`t use this with custom content view");
+	public void setSwipeRefreshLayoutOnRefreshListener(SwipeRefreshLayout.OnRefreshListener listener) {
+		if (mSwipeRefreshLayout == null) throw new RuntimeException("Can`t use this with custom content view");
 
 		mSwipeRefreshLayout.setOnRefreshListener(listener);
 	}
 
-	public void setSwipeRefreshLayoutEnabled(boolean state)
-	{
+	public void setSwipeRefreshLayoutEnabled(boolean state) {
 		mSwipeRefreshLayout.setEnabled(state);
 	}
 
-	public boolean isSwipeRefreshLayoutEnabled()
-	{
+	public boolean isSwipeRefreshLayoutEnabled() {
 		return mSwipeRefreshLayout.isEnabled();
 	}
 
-	public void setFabEnabled(boolean state)
-	{
+	public void setFabEnabled(boolean state) {
 		isFabEnabled = state;
-		if (mFloatingActionButton == null)
-			return;
+		if (mFloatingActionButton == null) return;
 
 		mFloatingActionButton.setVisibility(isFabEnabled ? View.VISIBLE : View.GONE);
 		// Нужно для класса поведения кнопки, чтобы она не появлялась, когда заперщена
 		mFloatingActionButton.setEnabled(isFabEnabled);
 	}
 
-	public FloatingActionButton getFloatingActionButton()
-	{
+	public FloatingActionButton getFloatingActionButton() {
 		return mFloatingActionButton;
 	}
 
 
 	@Override
-	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
-	{
+	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		return inflater.inflate(R.layout.list_fragment_layout, container, false);
 	}
 
-	private int getColor(@ColorRes int id)
-	{
+	private int getColor(@ColorRes int id) {
 		return getResources().getColor(id);
 	}
 
@@ -102,8 +89,7 @@ public class StarksoftRecyclerListFragment extends Fragment
 	 * Attach to list view once the view hierarchy has been created.
 	 */
 	@Override
-	public void onViewCreated(View view, Bundle savedInstanceState)
-	{
+	public void onViewCreated(View view, Bundle savedInstanceState) {
 		super.onViewCreated(view, savedInstanceState);
 		ensureList();
 	}
@@ -112,8 +98,7 @@ public class StarksoftRecyclerListFragment extends Fragment
 	 * Detach from list view.
 	 */
 	@Override
-	public void onDestroyView()
-	{
+	public void onDestroyView() {
 		mHandler.removeCallbacks(mRequestFocus);
 		mList = null;
 		mListShown = false;
@@ -125,25 +110,20 @@ public class StarksoftRecyclerListFragment extends Fragment
 	/**
 	 * Provide the adapter for the recycler view.
 	 */
-	public void setListAdapter(RecyclerView.Adapter<?> adapter)
-	{
+	public void setListAdapter(RecyclerView.Adapter<?> adapter) {
 		// If LayoutManager is missing set to default
-		if (mList.getLayoutManager() == null)
-		{
+		if (mList.getLayoutManager() == null) {
 			throw new IllegalStateException("LayoutManager is not set in RecyclerView!");
 		}
 		boolean hadAdapter = mAdapter != null;
 		mAdapter = adapter;
-		if (mList != null)
-		{
-			if (adapter == null)
-			{
+		if (mList != null) {
+			if (adapter == null) {
 				// Если нет адаптера - надо запретить
 				getSwipeRefreshLayout().setEnabled(false);
 			}
 			mList.setAdapter(adapter);
-			if (!mListShown && !hadAdapter)
-			{
+			if (!mListShown && !hadAdapter) {
 				// The list was hidden, and previously didn't have an
 				// adapter. It is now time to show it.
 				setListShown(true, getView().getWindowToken() != null);
@@ -154,8 +134,7 @@ public class StarksoftRecyclerListFragment extends Fragment
 	/**
 	 * Get the activity's list view widget.
 	 */
-	public RecyclerView getRecyclerListView()
-	{
+	public RecyclerView getRecyclerListView() {
 		ensureList();
 		return mList;
 	}
@@ -165,27 +144,22 @@ public class StarksoftRecyclerListFragment extends Fragment
 	 * when the list is empty. If you would like to have it shown, call this
 	 * method to supply the text it should use.
 	 */
-	public void setEmptyText(CharSequence text)
-	{
+	public void setEmptyText(CharSequence text) {
 		ensureList();
-		if (mStandardEmptyView == null)
-		{
+		if (mStandardEmptyView == null) {
 			throw new IllegalStateException("Can't be used with a custom content view");
 		}
 		mStandardEmptyView.setText(text);
-		if (mEmptyText == null)
-		{
+		if (mEmptyText == null) {
 			mList.setEmptyView(mStandardEmptyView);
 		}
 		mEmptyText = text;
 	}
 
-	public void setHintText(CharSequence text)
-	{
+	public void setHintText(CharSequence text) {
 		ensureList();
 
-		if (mStandardHintView == null)
-		{
+		if (mStandardHintView == null) {
 			throw new IllegalStateException("Can't be used with a custom content view");
 		}
 		mStandardHintView.setText(text);
@@ -193,10 +167,9 @@ public class StarksoftRecyclerListFragment extends Fragment
 		mStandardHintView.startAnimation(AnimationUtils.loadAnimation(getActivity(), android.R.anim.fade_in));
 	}
 
-	public void removeHint()
-	{
-//		if (!TextUtils.isEmpty(mEmptyText))
-//			throw new RuntimeException("Can`t show hint when showing empty view!");
+	public void removeHint() {
+		//		if (!TextUtils.isEmpty(mEmptyText))
+		//			throw new RuntimeException("Can`t show hint when showing empty view!");
 
 		mStandardHintView.startAnimation(AnimationUtils.loadAnimation(getActivity(), android.R.anim.fade_out));
 		mStandardHintView.setVisibility(View.GONE);
@@ -218,8 +191,7 @@ public class StarksoftRecyclerListFragment extends Fragment
 	 * @param shown If true, the list view is shown; if false, the progress
 	 *              indicator. The initial value is true.
 	 */
-	public void setListShown(boolean shown)
-	{
+	public void setListShown(boolean shown) {
 		setListShown(shown, true);
 	}
 
@@ -227,8 +199,7 @@ public class StarksoftRecyclerListFragment extends Fragment
 	 * Like {@link #setListShown(boolean)}, but no animation is used when
 	 * transitioning from the previous state.
 	 */
-	public void setListShownNoAnimation(boolean shown)
-	{
+	public void setListShownNoAnimation(boolean shown) {
 		setListShown(shown, false);
 	}
 
@@ -242,74 +213,58 @@ public class StarksoftRecyclerListFragment extends Fragment
 	 * @param animate If true, an animation will be used to transition to the new
 	 *                state.
 	 */
-	private void setListShown(boolean shown, boolean animate)
-	{
+	private void setListShown(boolean shown, boolean animate) {
 		ensureList();
 
-//		if (TextUtils.isEmpty(mStandardEmptyView.getText().toString()))
-//		{
-//			throw new IllegalStateException("setEmptyText is never called");
-//		}
+		//		if (TextUtils.isEmpty(mStandardEmptyView.getText().toString()))
+		//		{
+		//			throw new IllegalStateException("setEmptyText is never called");
+		//		}
 
-		if (mProgressContainer == null)
-		{
+		if (mProgressContainer == null) {
 			throw new IllegalStateException("Can't be used with a custom content view");
 		}
-		if (mListShown == shown)
-		{
+		if (mListShown == shown) {
 			return;
 		}
 		mListShown = shown;
 
-//		mSwipeRefreshLayout.setEnabled(shown);
-//		mSwipeRefreshLayout.setClickable(shown);
-//		mSwipeRefreshLayout.setFocusable(shown);
-		if (shown)
-		{
-			if (animate)
-			{
+		//		mSwipeRefreshLayout.setEnabled(shown);
+		//		mSwipeRefreshLayout.setClickable(shown);
+		//		mSwipeRefreshLayout.setFocusable(shown);
+		if (shown) {
+			if (animate) {
 				mProgressContainer.startAnimation(AnimationUtils.loadAnimation(getActivity(), android.R.anim.fade_out));
 				mListContainer.startAnimation(AnimationUtils.loadAnimation(getActivity(), android.R.anim.fade_in));
 
-				if (isFabEnabled)
-					mFloatingActionButton.startAnimation(AnimationUtils.loadAnimation(getActivity(), android.R.anim.fade_in));
+				if (isFabEnabled) mFloatingActionButton.startAnimation(AnimationUtils.loadAnimation(getActivity(), android.R.anim.fade_in));
 
-			}
-			else
-			{
+			} else {
 				mProgressContainer.clearAnimation();
 				mListContainer.clearAnimation();
 
-				if (isFabEnabled)
-					mFloatingActionButton.clearAnimation();
+				if (isFabEnabled) mFloatingActionButton.clearAnimation();
 			}
 			mProgressContainer.setVisibility(View.GONE);
 			mListContainer.setVisibility(View.VISIBLE);
 
 			mFloatingActionButton.setVisibility(isFabEnabled ? View.VISIBLE : View.GONE);
-		}
-		else
-		{
-			if (animate)
-			{
+		} else {
+			if (animate) {
 				mProgressContainer.startAnimation(AnimationUtils.loadAnimation(getActivity(), android.R.anim.fade_in));
 				mListContainer.startAnimation(AnimationUtils.loadAnimation(getActivity(), android.R.anim.fade_out));
 
-				if (isFabEnabled)
-					mFloatingActionButton.startAnimation(AnimationUtils.loadAnimation(getActivity(), android.R.anim.fade_out));
-			}
-			else
-			{
+				if (isFabEnabled) mFloatingActionButton.startAnimation(AnimationUtils.loadAnimation(getActivity(), android.R.anim.fade_out));
+			} else {
 				mProgressContainer.clearAnimation();
 				mListContainer.clearAnimation();
 
-				if (isFabEnabled)
-					mFloatingActionButton.clearAnimation();
+				if (isFabEnabled) mFloatingActionButton.clearAnimation();
 			}
 			mProgressContainer.setVisibility(View.VISIBLE);
 			mListContainer.setVisibility(View.GONE);
 			// По идее, не нужно показывать кнопку при загружке листа, надо бы ее выключать
-//			mFloatingActionButton.setVisibility(isFabEnabled ? View.VISIBLE : View.GONE);
+			//			mFloatingActionButton.setVisibility(isFabEnabled ? View.VISIBLE : View.GONE);
 			mFloatingActionButton.setVisibility(View.GONE);
 		}
 	}
@@ -317,27 +272,20 @@ public class StarksoftRecyclerListFragment extends Fragment
 	/**
 	 * Get the RecyclerView.Adapter associated with this activity's RecyclerView.
 	 */
-	public RecyclerView.Adapter<?> getRecyclerViewListAdapter()
-	{
+	public RecyclerView.Adapter<?> getRecyclerViewListAdapter() {
 		return mAdapter;
 	}
 
-	private void ensureList()
-	{
-		if (mList != null)
-			return;
+	private void ensureList() {
+		if (mList != null) return;
 
 		View root = getView();
-		if (root == null)
-		{
+		if (root == null) {
 			throw new IllegalStateException("Content view not yet created");
 		}
-		if (root instanceof EmptyRecyclerView)
-		{
+		if (root instanceof EmptyRecyclerView) {
 			mList = (EmptyRecyclerView) root;
-		}
-		else
-		{
+		} else {
 			mStandardEmptyView = (TextView) root.findViewById(INTERNAL_EMPTY_ID);
 			mStandardEmptyView.setVisibility(View.GONE);
 
@@ -347,47 +295,39 @@ public class StarksoftRecyclerListFragment extends Fragment
 			mFloatingActionButton = (FloatingActionButton) root.findViewById(INTERNAL_FAB_CONTAINER_ID);
 			mListContainer = root.findViewById(INTERNAL_LIST_CONTAINER_ID);
 			mSwipeRefreshLayout = (SwipeRefreshLayout) mListContainer;
-			if (mSwipeRefreshLayout != null)
-			{
-//				mSwipeRefreshLayout.setEnabled(isSwipeRefreshLayoutEnabled);
+			if (mSwipeRefreshLayout != null) {
+				//				mSwipeRefreshLayout.setEnabled(isSwipeRefreshLayoutEnabled);
 				// Override this resources to customize SwipeRefreshLayout`s colors
 				mSwipeRefreshLayout.setColorSchemeResources(R.color.swipe_color_1, R.color.swipe_color_2, R.color.swipe_color_3, R.color.swipe_color_4);
 			}
 
 			View rawListView = root.findViewById(android.R.id.list);
-			if (!(rawListView instanceof EmptyRecyclerView))
-			{
-				if (rawListView == null)
-					throw new RuntimeException("Your content must have a EmptyRecyclerView whose id attribute is " + "'android.R.id.list'");
+			if (!(rawListView instanceof EmptyRecyclerView)) {
+				if (rawListView == null) throw new RuntimeException("Your content must have a EmptyRecyclerView whose id attribute is " + "'android.R.id.list'");
 
 				throw new RuntimeException("Content has view with id attribute 'android.R.id.list' " + "that is not a EmptyRecyclerView class");
 			}
 			mList = (EmptyRecyclerView) rawListView;
 
 			setFabEnabled(isFabEnabled);
-//			mFloatingActionButton.setVisibility(isFabEnabled ? View.VISIBLE : View.GONE);
-//			// Нужно для класса поведения кнопки, чтобы она не появлялась, когда заперщена
-//			mFloatingActionButton.setEnabled(isFabEnabled);
+			//			mFloatingActionButton.setVisibility(isFabEnabled ? View.VISIBLE : View.GONE);
+			//			// Нужно для класса поведения кнопки, чтобы она не появлялась, когда заперщена
+			//			mFloatingActionButton.setEnabled(isFabEnabled);
 
-			if (mEmptyText != null)
-			{
+			if (mEmptyText != null) {
 				mStandardEmptyView.setText(mEmptyText);
 			}
 		}
 		mListShown = true;
 
-		if (mAdapter != null)
-		{
+		if (mAdapter != null) {
 			RecyclerView.Adapter<?> adapter = mAdapter;
 			mAdapter = null;
 			setListAdapter(adapter);
-		}
-		else
-		{
+		} else {
 			// We are starting without an adapter, so assume we won't
 			// have our data right away and start with the progress indicator.
-			if (mProgressContainer != null)
-				setListShown(false, false);
+			if (mProgressContainer != null) setListShown(false, false);
 		}
 		mHandler.post(mRequestFocus);
 	}
