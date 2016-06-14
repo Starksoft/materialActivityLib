@@ -52,7 +52,9 @@ public class StarksoftActivity extends AppCompatActivity {
 	 */
 	boolean closeActionMode() {
 		boolean isModeEnabled = mActionMode != null;
-		if (isModeEnabled) mActionMode.finish();
+		if (isModeEnabled) {
+			mActionMode.finish();
+		}
 
 		return isModeEnabled;
 	}
@@ -76,7 +78,9 @@ public class StarksoftActivity extends AppCompatActivity {
 	}
 
 	public void disableDrawer(int lockMode) {
-		if (mDrawerLayout == null || getSupportActionBar() == null) return;
+		if (mDrawerLayout == null || getSupportActionBar() == null) {
+			return;
+		}
 
 		mDrawerLayout.setDrawerLockMode(lockMode, mDrawerList);
 		getSupportActionBar().setDisplayHomeAsUpEnabled(false);
@@ -84,7 +88,9 @@ public class StarksoftActivity extends AppCompatActivity {
 	}
 
 	public void enableDrawer() {
-		if (mDrawerLayout == null || getSupportActionBar() == null) return;
+		if (mDrawerLayout == null || getSupportActionBar() == null) {
+			return;
+		}
 
 		mDrawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED, mDrawerList);
 		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -103,8 +109,11 @@ public class StarksoftActivity extends AppCompatActivity {
 	public void toggleDrawer() {
 		int lockMode = mDrawerLayout.getDrawerLockMode(mDrawerList);
 		if (lockMode == DrawerLayout.LOCK_MODE_UNLOCKED) {
-			if (mDrawerLayout.isDrawerOpen(mDrawerList)) mDrawerLayout.closeDrawer(mDrawerList);
-			else mDrawerLayout.openDrawer(mDrawerList);
+			if (mDrawerLayout.isDrawerOpen(mDrawerList)) {
+				mDrawerLayout.closeDrawer(mDrawerList);
+			} else {
+				mDrawerLayout.openDrawer(mDrawerList);
+			}
 		}
 	}
 
@@ -114,7 +123,9 @@ public class StarksoftActivity extends AppCompatActivity {
 	public void setDrawerAdapter(ListAdapter adapter) {
 		allowActivityFinish = false;
 
-		if (mDrawerList != null) mDrawerList.setAdapter(mListAdapter = adapter);
+		if (mDrawerList != null) {
+			mDrawerList.setAdapter(mListAdapter = adapter);
+		}
 	}
 
 	public ListAdapter getDrawerAdapter() {
@@ -124,7 +135,9 @@ public class StarksoftActivity extends AppCompatActivity {
 	public void setDrawerClickListener(ListView.OnItemClickListener listener) {
 		allowActivityFinish = false;
 
-		if (mDrawerList != null) mDrawerList.setOnItemClickListener(listener);
+		if (mDrawerList != null) {
+			mDrawerList.setOnItemClickListener(listener);
+		}
 	}
 
 	public void selectDrawerItemAndSetTitle(int position, String optTitle) {
@@ -136,7 +149,9 @@ public class StarksoftActivity extends AppCompatActivity {
 				// Это должно падать, все нормально
 				DrawerItemModel model = ((DrawerItemModelAdapter) mListAdapter).getItem(position);
 				setTitle(model.getTitle());
-			} else setTitle(optTitle);
+			} else {
+				setTitle(optTitle);
+			}
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -217,21 +232,29 @@ public class StarksoftActivity extends AppCompatActivity {
 		// between the sliding drawer and the action bar app icon
 		mDrawerToggle = new ActionBarDrawerToggle(this, mDrawerLayout, R.string.drawer_open, R.string.drawer_close) {
 			public void onDrawerClosed(View view) {
-				if (mDrawerStateCallBack != null) mDrawerStateCallBack.onDrawerClosed(view);
+				if (mDrawerStateCallBack != null) {
+					mDrawerStateCallBack.onDrawerClosed(view);
+				}
 
 				getSupportActionBar().setTitle(mTitle);
 				invalidateOptionsMenu(); // creates call to onPrepareOptionsMenu()
 			}
 
 			public void onDrawerOpened(View drawerView) {
-				if (mDrawerStateCallBack != null) mDrawerStateCallBack.onDrawerOpened(drawerView);
+				if (mDrawerStateCallBack != null) {
+					mDrawerStateCallBack.onDrawerOpened(drawerView);
+				}
 
-				if (mActionMode != null) mActionMode.finish();
+				if (mActionMode != null) {
+					mActionMode.finish();
+				}
 
 				getSupportActionBar().setTitle(mDrawerTitle);
 				invalidateOptionsMenu(); // creates call to onPrepareOptionsMenu()
 			}
-		};
+		}
+
+		;
 		mDrawerLayout.setDrawerListener(mDrawerToggle);
 	}
 
@@ -250,7 +273,9 @@ public class StarksoftActivity extends AppCompatActivity {
 			// Закрываем меню
 			boolean drawerClosed = closeDrawer();
 
-			if (allowActivityFinish) finish();
+			if (allowActivityFinish) {
+				finish();
+			}
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -274,7 +299,9 @@ public class StarksoftActivity extends AppCompatActivity {
 	@Override
 	public void setTitle(CharSequence title) {
 		mTitle = title;
-		getSupportActionBar().setTitle(mTitle);
+		if (getSupportActionBar() != null) {
+			getSupportActionBar().setTitle(mTitle);
+		}
 	}
 
 	/**
@@ -285,13 +312,17 @@ public class StarksoftActivity extends AppCompatActivity {
 	protected void onPostCreate(Bundle savedInstanceState) {
 		super.onPostCreate(savedInstanceState);
 		// Sync the toggle state after onRestoreInstanceState has occurred.
-		if (mDrawerToggle != null) mDrawerToggle.syncState();
+		if (mDrawerToggle != null) {
+			mDrawerToggle.syncState();
+		}
 	}
 
 	@Override
 	public void onConfigurationChanged(Configuration newConfig) {
 		super.onConfigurationChanged(newConfig);
 		// Pass any configuration change to the drawer toggls
-		if (mDrawerToggle != null) mDrawerToggle.onConfigurationChanged(newConfig);
+		if (mDrawerToggle != null) {
+			mDrawerToggle.onConfigurationChanged(newConfig);
+		}
 	}
 }
