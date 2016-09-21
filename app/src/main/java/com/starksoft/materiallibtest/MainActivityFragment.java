@@ -13,14 +13,66 @@ import android.widget.Toast;
 
 import com.starksoft.material_activity.StarksoftActivityNewDrawer;
 import com.starksoft.material_activity.StarksoftRecyclerListFragment;
+import com.starksoft.material_activity.helpers.ErrorLayoutManager;
+import com.starksoft.material_activity.views.ErrorLayoutContainer;
 
-public class MainActivityFragment extends StarksoftRecyclerListFragment implements SwipeRefreshLayout.OnRefreshListener {
+import java.io.Serializable;
+
+public class MainActivityFragment extends StarksoftRecyclerListFragment implements SwipeRefreshLayout.OnRefreshListener, ErrorLayoutContainer.ErrorLayoutCallback {
 	private Handler mHandler;
-	private boolean isEmpty = false;
+	//	private boolean isEmpty = false;
+	public static final String EXTRA_OPTIONS = "options";
 	/* If false - disables list progressbar when refreshing*/
 	static final boolean REFRESH_LIST = false;
+	private Options currentOptions;
+	private ErrorLayoutManager errorLayoutManager;
 
-	public MainActivityFragment() {
+	class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
+		private String[] mDataset;
+
+		public class ViewHolder extends RecyclerView.ViewHolder {
+			public TextView mTextView;
+
+			public ViewHolder(TextView v) {
+				super(v);
+				mTextView = v;
+			}
+		}
+
+		public MyAdapter(String[] myDataset) {
+			mDataset = myDataset;
+		}
+
+		@Override
+		public MyAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+			TextView t = new TextView(getActivity());
+			t.setTextSize(20);
+			return new ViewHolder(t);
+		}
+
+		@Override
+		public void onBindViewHolder(ViewHolder holder, int position) {
+			holder.mTextView.setText(mDataset[position]);
+		}
+
+		@Override
+		public int getItemCount() {
+			return mDataset.length;
+		}
+	}
+
+	enum Options implements Serializable {
+		EMPTY_LIST, ERROR, FILLED_LIST
+	}
+
+	public static MainActivityFragment newInstance(Options options) {
+		MainActivityFragment fragment = new MainActivityFragment();
+
+		Bundle args = new Bundle();
+		args.putSerializable(EXTRA_OPTIONS, options);
+		fragment.setArguments(args);
+
+		return fragment;
 	}
 
 	@Override
@@ -34,7 +86,11 @@ public class MainActivityFragment extends StarksoftRecyclerListFragment implemen
 		getSwipeRefreshLayout().setOnRefreshListener(this);
 
 		Bundle b = getArguments();
-		isEmpty = b != null && b.getBoolean("empty");
+		if (b != null) {
+			currentOptions = (Options) b.getSerializable(EXTRA_OPTIONS);
+		}
+
+		errorLayoutManager = new ErrorLayoutManager(getActivity(), this);
 
 		mHandler = new Handler();
 		mHandler.postDelayed(new Runnable() {
@@ -42,10 +98,17 @@ public class MainActivityFragment extends StarksoftRecyclerListFragment implemen
 			public void run() {
 				setEmptyText("No data!");
 
-				if (isEmpty) {
-					setListAdapter(null);
-				} else {
-					loadAdapter(500);
+				switch (currentOptions) {
+					case EMPTY_LIST:
+						setListAdapter(null);
+						break;
+
+					case ERROR:
+						errorLayoutManager.showNetworkErrorLayout(MainActivityFragment.this, true);
+						break;
+
+					default:
+						loadAdapter(500);
 				}
 			}
 		}, 1000);
@@ -85,7 +148,7 @@ public class MainActivityFragment extends StarksoftRecyclerListFragment implemen
 	@Override
 	public void onRefresh() {
 		// Это защищает от ложных срабатываний, при отстутствии адаптера
-		if (!getSwipeRefreshLayout().isEnabled()){
+		if (!getSwipeRefreshLayout().isEnabled()) {
 			return;
 		}
 
@@ -105,37 +168,8 @@ public class MainActivityFragment extends StarksoftRecyclerListFragment implemen
 		}, 2000);
 	}
 
-	class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
-		private String[] mDataset;
-
-		public class ViewHolder extends RecyclerView.ViewHolder {
-			public TextView mTextView;
-
-			public ViewHolder(TextView v) {
-				super(v);
-				mTextView = v;
-			}
-		}
-
-		public MyAdapter(String[] myDataset) {
-			mDataset = myDataset;
-		}
-
-		@Override
-		public MyAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-			TextView t = new TextView(getActivity());
-			t.setTextSize(20);
-			return new ViewHolder(t);
-		}
-
-		@Override
-		public void onBindViewHolder(ViewHolder holder, int position) {
-			holder.mTextView.setText(mDataset[position]);
-		}
-
-		@Override
-		public int getItemCount() {
-			return mDataset.length;
-		}
+	@Override
+	public void onErrorLayoutMainButtonClick(View view) {
+		Snackbar.make(getView(), "onErrorLayoutMainButtonClick!", Snackbar.LENGTH_LONG).show();
 	}
 }

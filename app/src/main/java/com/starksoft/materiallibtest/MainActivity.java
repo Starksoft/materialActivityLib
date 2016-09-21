@@ -10,6 +10,10 @@ import android.view.MenuItem;
 
 import com.starksoft.material_activity.StarksoftActivityNewDrawer;
 
+import static com.starksoft.materiallibtest.MainActivityFragment.Options.EMPTY_LIST;
+import static com.starksoft.materiallibtest.MainActivityFragment.Options.ERROR;
+import static com.starksoft.materiallibtest.MainActivityFragment.Options.FILLED_LIST;
+
 public class MainActivity extends StarksoftActivityNewDrawer implements NavigationView.OnNavigationItemSelectedListener {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -26,7 +30,7 @@ public class MainActivity extends StarksoftActivityNewDrawer implements Navigati
 	@Override
 	public boolean onNavigationItemSelected(final MenuItem menuItem) {
 		// Странный костыль, иначе не работает
-		menuItem.setChecked(true);
+//		menuItem.setChecked(true);
 		return selectItem(menuItem.getItemId(), 500, true);
 	}
 
@@ -35,7 +39,7 @@ public class MainActivity extends StarksoftActivityNewDrawer implements Navigati
 
 		switch (resId) {
 			case R.id.filledList:
-				fragment = new MainActivityFragment();
+				fragment = MainActivityFragment.newInstance(FILLED_LIST);
 				break;
 
 			//			case R.id.tabsFragment:
@@ -46,11 +50,12 @@ public class MainActivity extends StarksoftActivityNewDrawer implements Navigati
 				fragment = new MainActivityExpandableListFragment();
 				break;
 
+			case R.id.errorLayoutDemo:
+				fragment = MainActivityFragment.newInstance(ERROR);
+				break;
+
 			case R.id.emptyList:
-				fragment = new MainActivityFragment();
-				Bundle b = new Bundle();
-				b.putBoolean("empty", true);
-				fragment.setArguments(b);
+				fragment = MainActivityFragment.newInstance(EMPTY_LIST);
 				break;
 		}
 		if (fragment != null) {

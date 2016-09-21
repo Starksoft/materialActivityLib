@@ -13,6 +13,12 @@
             android:id="@+id/emptyList"
             android:icon="@drawable/fab_src"
             android:title="Empty list"/>
+
+        <item
+            android:id="@+id/errorLayoutDemo"
+            android:icon="@drawable/fab_src"
+            android:title="Error layout demo"/>
+
         <item
             android:id="@+id/expandableList"
             android:icon="@drawable/fab_src"
