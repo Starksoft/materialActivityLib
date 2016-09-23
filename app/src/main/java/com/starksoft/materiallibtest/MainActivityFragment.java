@@ -1,5 +1,6 @@
 package com.starksoft.materiallibtest;
 
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.design.widget.Snackbar;
@@ -11,14 +12,14 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.starksoft.material_activity.StarksoftActivityNewDrawer;
-import com.starksoft.material_activity.StarksoftRecyclerListFragment;
-import com.starksoft.material_activity.helpers.ErrorLayoutManager;
-import com.starksoft.material_activity.views.ErrorLayoutContainer;
+import com.starksoft.commons.BaseActivityNewDrawer;
+import com.starksoft.commons.fragments.BaseRecyclerViewListFragment;
+import com.starksoft.commons.helpers.ErrorLayoutManager;
+import com.starksoft.commons.views.ErrorLayoutContainer;
 
 import java.io.Serializable;
 
-public class MainActivityFragment extends StarksoftRecyclerListFragment implements SwipeRefreshLayout.OnRefreshListener, ErrorLayoutContainer.ErrorLayoutCallback {
+public class MainActivityFragment extends BaseRecyclerViewListFragment implements SwipeRefreshLayout.OnRefreshListener, ErrorLayoutContainer.ErrorLayoutCallback {
 	private Handler mHandler;
 	//	private boolean isEmpty = false;
 	public static final String EXTRA_OPTIONS = "options";
@@ -30,16 +31,16 @@ public class MainActivityFragment extends StarksoftRecyclerListFragment implemen
 	class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
 		private String[] mDataset;
 
-		public class ViewHolder extends RecyclerView.ViewHolder {
-			public TextView mTextView;
+		class ViewHolder extends RecyclerView.ViewHolder {
+			TextView mTextView;
 
-			public ViewHolder(TextView v) {
+			ViewHolder(TextView v) {
 				super(v);
 				mTextView = v;
 			}
 		}
 
-		public MyAdapter(String[] myDataset) {
+		MyAdapter(String[] myDataset) {
 			mDataset = myDataset;
 		}
 
@@ -53,6 +54,10 @@ public class MainActivityFragment extends StarksoftRecyclerListFragment implemen
 		@Override
 		public void onBindViewHolder(ViewHolder holder, int position) {
 			holder.mTextView.setText(mDataset[position]);
+
+			Drawable drawable = getResources().getDrawable(R.drawable.fab_src);
+
+			holder.mTextView.setCompoundDrawables(drawable, null, null, null);
 		}
 
 		@Override
@@ -142,7 +147,7 @@ public class MainActivityFragment extends StarksoftRecyclerListFragment implemen
 
 		setListAdapter(new MyAdapter(items.split(";")));
 		setHintText("Items: " + getRecyclerViewListAdapter().getItemCount());
-		((StarksoftActivityNewDrawer) getActivity()).setNavigationViewCounter(R.id.filledList, getRecyclerViewListAdapter().getItemCount());
+		((BaseActivityNewDrawer) getActivity()).setNavigationViewCounter(R.id.filledList, getRecyclerViewListAdapter().getItemCount());
 	}
 
 	@Override

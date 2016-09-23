@@ -1,20 +1,19 @@
 package com.starksoft.materiallibtest;
 
 import android.os.Bundle;
-import android.os.Handler;
 import android.support.annotation.IdRes;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
 import android.view.Menu;
 import android.view.MenuItem;
 
-import com.starksoft.material_activity.StarksoftActivityNewDrawer;
+import com.starksoft.commons.BaseActivityNewDrawer;
 
 import static com.starksoft.materiallibtest.MainActivityFragment.Options.EMPTY_LIST;
 import static com.starksoft.materiallibtest.MainActivityFragment.Options.ERROR;
 import static com.starksoft.materiallibtest.MainActivityFragment.Options.FILLED_LIST;
 
-public class MainActivity extends StarksoftActivityNewDrawer implements NavigationView.OnNavigationItemSelectedListener {
+public class MainActivity extends BaseActivityNewDrawer implements NavigationView.OnNavigationItemSelectedListener {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -33,6 +32,8 @@ public class MainActivity extends StarksoftActivityNewDrawer implements Navigati
 //		menuItem.setChecked(true);
 		return selectItem(menuItem.getItemId(), 500, true);
 	}
+
+	private Fragment fragmentToShow;
 
 	public boolean selectItem(@IdRes int resId, int counter, boolean useDelay) {
 		Fragment fragment = null;
@@ -60,20 +61,24 @@ public class MainActivity extends StarksoftActivityNewDrawer implements Navigati
 		}
 		if (fragment != null) {
 			// setActiveFragment(fragment);
-			final Fragment f = fragment;
+			fragmentToShow = fragment;
 			// Убираем лаг при переключении
 			if (useDelay) {
-				new Handler().postDelayed(new Runnable() {
-					@Override
-					public void run() {
-						setActiveFragment(f, true, false);
-					}
-				}, 300);
-			} else setActiveFragment(f, true, false);
+				handlerHelper.makeRequest(selectItemRunnable);
+			} else {
+				setActiveFragment(fragmentToShow, true, false);
+			}
 		}
 		selectDrawerItemAndSetTitle(resId, counter, null);
 		return fragment != null;
 	}
+
+	Runnable selectItemRunnable = new Runnable() {
+		@Override
+		public void run() {
+			setActiveFragment(fragmentToShow, true, false);
+		}
+	};
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {

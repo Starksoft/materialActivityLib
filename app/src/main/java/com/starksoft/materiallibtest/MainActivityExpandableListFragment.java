@@ -11,9 +11,9 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.starksoft.material_activity.StarksoftRecyclerListFragment;
+import com.starksoft.commons.fragments.BaseRecyclerViewListFragment;
 
-public class MainActivityExpandableListFragment extends StarksoftRecyclerListFragment implements SwipeRefreshLayout.OnRefreshListener {
+public class MainActivityExpandableListFragment extends BaseRecyclerViewListFragment implements SwipeRefreshLayout.OnRefreshListener {
 	Handler mHandler;
 	boolean isEmpty = false;
 
