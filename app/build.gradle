@@ -33,5 +33,5 @@ dependencies {
 
     compile fileTree(include: ['*.jar'], dir: 'libs')
     
-    compile project(':lib_starksoft_material_activity')
+    compile project(':commons')
 }
